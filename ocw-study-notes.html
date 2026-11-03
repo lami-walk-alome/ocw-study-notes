@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OCW 전자·기계·소프트웨어 학습 노트</title>
+<style>
+:root{
+  --purple:#6C31E3;      /* 중심 노트: 옵시디언 퍼플 */
+  --black:#1E1E1E;       /* 기본 노트: 옵시디언 블랙 */
+  --sky:#0EA5E9; --blue:#1D4ED8; --red:#DC2626; --deep:#4C1D95;
+  --line:#E4DDF8; --soft:#F6F2FE; --text2:#3B3558;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--black);font-family:Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;line-height:1.65;font-size:15px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+header.top{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+header.top .brand{font-weight:800;font-size:17px;color:var(--black);letter-spacing:-.2px}
+header.top .brand i{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--purple);margin-right:8px;vertical-align:-1px}
+.app{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:calc(100vh - 56px)}
+aside{border-right:1px solid var(--line);padding:16px 14px;position:sticky;top:56px;align-self:start;height:calc(100vh - 56px);overflow:auto}
+main{padding:24px 32px 64px;max-width:1100px;width:100%}
+#q{width:100%;padding:9px 11px;border:1px solid var(--black);border-radius:8px;font-size:14px;font-family:inherit;outline:none}
+#q:focus{border-color:var(--purple);box-shadow:0 0 0 2px var(--line)}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 14px}
+.fbtn{border:1px solid var(--black);background:#fff;color:var(--black);border-radius:999px;padding:3px 11px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.fbtn.on{background:var(--black);color:#fff}
+.clist a{display:block;padding:8px 10px;border-radius:8px;color:var(--black);text-decoration:none;border-bottom:1px solid #fff}
+.clist a:hover,.clist a.cur{background:var(--soft)}
+.clist .ct{font-weight:700;font-size:14px}
+.clist .cs{font-size:12px;color:var(--text2)}
+.clist .hubmark{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--purple);margin-right:6px}
+.clist .nodemark{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--black);margin-right:6px}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;border-radius:999px;padding:1px 9px;border:1px solid currentColor;margin-right:5px;background:#fff}
+h1{font-size:26px;margin:0 0 6px;letter-spacing:-.4px}
+h2{font-size:18px;margin:34px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--black)}
+p.lead{color:var(--text2);margin:6px 0 16px}
+.graphbox{border:1px solid var(--line);border-radius:12px;background:#fff;position:relative;overflow:hidden}
+.graphbox svg{display:block;width:100%;height:auto;touch-action:none}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;padding:10px 14px;border-top:1px solid var(--line);color:var(--text2)}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.path{margin:6px 0 10px}
+.path b{display:inline-block;min-width:64px}
+.path a{display:inline-block;padding:2px 9px;border:1px solid var(--black);border-radius:8px;color:var(--black);margin:3px 0}
+.path a:hover{background:var(--black);color:#fff;text-decoration:none}
+.path span.ar{margin:0 6px;color:var(--purple);font-weight:700}
+.back{font-size:13.5px}
+.code{color:var(--purple);font-weight:800;margin-right:8px}
+.meta{color:var(--text2);margin:2px 0 8px}
+.lnk{display:inline-block;margin:4px 8px 4px 0;padding:6px 12px;border-radius:8px;font-size:13.5px;font-weight:600;border:1px solid var(--black);color:var(--black);background:#fff}
+.lnk:hover{text-decoration:none;background:var(--soft)}
+.lnk.video{background:var(--purple);border-color:var(--purple);color:#fff}
+.lnk.video:hover{background:#5624c0}
+.lnk.page{border-color:var(--blue);color:var(--blue)}
+.lnk small{font-weight:500;opacity:.85;margin-left:5px}
+.grp{font-size:12.5px;font-weight:700;color:var(--text2);margin:12px 0 2px}
+.two{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.rel{list-style:none;margin:0;padding:0}
+.rel li{padding:9px 0;border-bottom:1px solid var(--line)}
+.rel .tag{font-size:12px;font-weight:700;color:var(--purple)}
+.rel .why{color:var(--text2);font-size:13.5px}
+.tblwrap{overflow-x:auto}
+table.weeks{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+table.weeks th{text-align:left;border-bottom:2px solid var(--black);padding:8px 10px;white-space:nowrap}
+table.weeks td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top}
+table.weeks td.w{font-weight:800;white-space:nowrap}
+table.weeks td.l{white-space:nowrap;color:var(--text2)}
+table.weeks td.k{font-size:13px;color:var(--text2)}
+.refchip{display:inline-block;margin:2px 4px 2px 0;padding:1px 8px;border:1px solid var(--purple);border-radius:999px;font-size:12.5px;color:var(--purple);background:#fff}
+.refchip:hover{background:var(--purple);color:#fff;text-decoration:none}
+.note{font-size:13px;color:var(--text2);margin-top:14px}
+footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--text2)}
+svg text{font-family:inherit}
+.gnode{cursor:pointer}
+.gnode text{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+.gedge{stroke:#CBBDF5;stroke-width:1.6}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  main{padding:18px 16px 48px}
+  .two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#/" style="text-decoration:none"><i></i>OCW 전자·기계·소프트웨어 학습 노트</a>
+  <span style="color:var(--text2);font-size:13px">MIT · Stanford · Princeton 공개 영상 강의 (전자·기계·소프트웨어·AI)를 최신판 기준으로 정리하고 서로 연결한 개인 학습 사이트</span>
+</header>
+<div class="app">
+  <aside>
+    <input id="q" type="search" placeholder="과목, 교수, 키워드 검색 (예: 푸리에, Boyd)">
+    <div class="filters" id="filters"></div>
+    <div class="clist" id="clist"></div>
+  </aside>
+  <main id="view"></main>
+</div>
+
+<script>
+/* ===== 데이터 ===== */
+/* ===== 데이터 ===== */
+const CATS={ee:{n:"전자",c:"#1D4ED8"},me:{n:"기계",c:"#DC2626"},sw:{n:"소프트웨어·AI",c:"#0EA5E9"}};
+const ys=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q)+"&sp=EgIQAw%253D%253D";
+const ocws=q=>"https://ocw.mit.edu/search/?q="+encodeURIComponent(q);
+const ARROW_NOTE="주차 구성은 과목 소개와 확인된 강의 제목을 바탕으로 한 학습용 개요이며, 강의 번호가 빈 칸인 곳은 과목 페이지의 목록에서 정확한 순서를 확인하세요.";
+
+const C={
+sc01:{code:"6.01SC",title:"전기·컴퓨터공학 입문 I",en:"Introduction to Electrical Engineering and Computer Science I",school:"MIT",who:"MIT EECS (OCW Scholar)",term:"Spring 2011",level:"학부 1학년",cats:["ee"],
+ summary:"파이썬 프로그래밍으로 시작해 신호, 회로, 확률적 추정, 로봇 제어까지 한 학기에 훑는 입문 과목입니다. 회로와 신호 과목으로 들어가기 전 지도 역할을 합니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT OCW 6.01SC (27개)",u:"https://www.youtube.com/playlist?list=PL9B24A6A9D5754E70"},
+  {k:"page",t:"OCW 과목 페이지",u:"http://ocw.mit.edu/6-01SCS11"}],
+ weeks:[
+  ["1~3주","","프로그래밍 기초와 객체지향, 상태 기계","Python, state machines, object-oriented",[]],
+  ["4~6주","","신호와 시스템 모델링, 차분방정식, 극점","signals, difference equations, poles",[["sig","본격적인 신호 및 시스템"]]],
+  ["7~9주","","회로와 연산증폭기, 로봇 센서와 모터 제어","circuits, op amp, robot control",[["ckt","회로 과목으로 이어짐"],["fb","되먹임"]]],
+  ["10~12주","","확률적 추정과 계획","probability, search, planning",[["prob","확률 기초"]]]
+ ]},
+
+ckt:{code:"6.002",title:"회로와 전자소자",en:"Circuits and Electronics",school:"MIT",who:"Anant Agarwal",term:"Spring 2007 (24강)",level:"학부",cats:["ee"],
+ summary:"집중 소자 추상화에서 출발해 저항회로, MOSFET, 증폭기, 1·2차 회로, 임피던스, 연산증폭기, 전력변환 회로까지 다루는 전자공학 입문 강의입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT OCW 6.002 (26개, 24강은 원본 영상 없음)",u:"https://www.youtube.com/playlist?list=PL9F74AFA03AA06A11"},
+  {k:"page",t:"OCW 과목 페이지 (실험·문제·시험)",u:"https://ocw.mit.edu/courses/6-002-circuits-and-electronics-spring-2007/"}],
+ weeks:[
+  ["1주","L1–L2","집중 소자 추상화, 기본 회로 해석 (KVL, KCL)","lumped abstraction, KVL, KCL, node method",[["sc01","입문 과목"]]],
+  ["2주","L3–L4","중첩, 테브난·노턴 등가, 디지털 추상화","superposition, Thevenin, Norton, digital abstraction",[]],
+  ["3주","L5–L6","디지털 게이트의 내부, 비선형 회로 해석","MOSFET switch, noise margin",[]],
+  ["4주","L7–L8","증분 해석, 종속 전원과 증폭기","incremental analysis, dependent source",[]],
+  ["5주","L9–L10","MOSFET 증폭기 대신호 해석, 소신호 모델","large signal, small signal model",[]],
+  ["6주","L11–L12","소신호 회로, 축전기와 1차 시스템","small signal, capacitor, first-order",[["sig","1차 시스템과 극점"]]],
+  ["7주","L13–L14","디지털 회로의 속도, 상태와 메모리","propagation delay, state, memory",[]],
+  ["8주","L15–L16","2차 시스템, 정현파 정상상태","second-order, sinusoidal steady state",[["dyn","질량-스프링-댐퍼와 유사"],["sig","감쇠와 극점"]]],
+  ["9주","L17–L18","임피던스 모델, 필터","impedance, filters",[["sig","주파수 응답"],["ft","푸리에 해석"]]],
+  ["10주","L19–L20","연산증폭기 추상화와 회로","op amp abstraction, op amp circuits",[["fb","되먹임 증폭기"]]],
+  ["11주","L21–L22","연산증폭기 양의 되먹임, 에너지와 전력","positive feedback, energy, power",[]],
+  ["12주","L23–L24","마지막 주제: 전력 변환 회로와 다이오드(L24)","power conversion circuits, diodes",[["pwr","전력전자로 이어짐"]]]
+ ]},
+
+sig:{code:"6.003",title:"신호 및 시스템",en:"Signals and Systems",school:"MIT",who:"Dennis Freeman",term:"Fall 2011 (25강)",level:"학부",cats:["ee"],
+ summary:"이산·연속 시간 시스템을 극점과 모드로 이해하고, 라플라스·푸리에 변환과 되먹임, 샘플링, 변조로 확장합니다. 이 사이트에서 가장 많은 과목과 연결되는 중심 과목입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT OCW 6.003 (25강)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP61kdPAOC7CzFjJZ8f1eMUxs"},
+  {k:"page",t:"OCW 과목 페이지 (강의노트·문제·시험)",u:"https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/"},
+  {k:"notes",t:"Lecture 1 슬라이드 PDF",u:"https://www.ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/012675925c0f652bb179b6a33cd3d13b_MIT6_003F11_lec01.pdf"},
+  {k:"page",t:"Syllabus (교재: Oppenheim & Willsky)",u:"https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/pages/syllabus"}],
+ weeks:[
+  ["1주","L1–L3","신호와 시스템의 추상화, 이산시간(DT) 시스템, 되먹임·극점·기본 모드","signals, DT systems, poles, fundamental modes",[["ckt","1차 시스템"],["sc01","입문 과목"]]],
+  ["2주","L4–L5","연속시간(CT) 시스템, Z 변환","CT systems, Z transform",[]],
+  ["3주","L6–L7","라플라스 변환, CT 시스템의 이산 근사","Laplace transform, discretization",[["lds","상태방정식"]]],
+  ["4주","L8–L9","컨볼루션, 주파수 응답","convolution, frequency response",[["ckt","임피던스·필터"],["dyn","주파수 응답"]]],
+  ["5주","L10","되먹임과 제어","feedback and control, stability",[["fb","되먹임 시스템"],["ua","제어 응용"]]],
+  ["6주","","되먹임과 제어 심화","feedback design, gain",[["lds","상태 되먹임"]]],
+  ["7주","","푸리에 급수","Fourier series",[["ft","푸리에 급수"]]],
+  ["8주","","푸리에 변환과 성질","Fourier transform, properties",[["ft","푸리에 변환"]]],
+  ["9주","","푸리에 변환 응용: 필터링","filtering, ideal filters",[["ckt","필터 회로"],["dsp","디지털 필터"]]],
+  ["10주","L21","샘플링","sampling, aliasing",[["dsp","이산시간 처리"],["ft","샘플링 이론"]]],
+  ["11주","","샘플링과 복원","reconstruction, interpolation",[]],
+  ["12주","L23–L25","변조 (Modulation), 오디오 CD","amplitude modulation, audio CD",[["comm","디지털 통신"]]]
+ ]},
+
+dsp:{code:"RES.6-008",title:"디지털 신호처리",en:"Digital Signal Processing",school:"MIT",who:"Alan Oppenheim (1975년 강의 녹화)",term:"Spring 2011 게시",level:"학부 상급",cats:["ee"],
+ summary:"이산시간 신호와 시스템, Z 변환, 디지털 필터 설계, DFT와 FFT를 다루는 Oppenheim의 고전 강의입니다. 영상은 오래된 녹화이지만 OCW에 게시된 MIT의 DSP 영상 강의입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT RES.6-008 (22개, 1975년 녹화)",u:"https://www.youtube.com/playlist?list=PL8157CA8884571BA2"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/res-6-008-digital-signal-processing-spring-2011/"}],
+ weeks:[
+  ["1~3주","","이산시간 신호와 시스템, 컨볼루션, 차분방정식","DT signals, LTI systems, difference equations",[["sig","6.003의 DT 부분"]]],
+  ["4~6주","","Z 변환과 주파수 응답, 푸리에 변환","z-transform, frequency response, DTFT",[["ft","푸리에 변환 심화"]]],
+  ["7~9주","","디지털 필터 구조와 설계 (FIR, IIR)","filter structures, FIR, IIR design",[]],
+  ["10~12주","","DFT와 FFT 알고리즘","DFT, FFT",[["ft","DFT/FFT"]]]
+ ]},
+
+comm:{code:"6.02",title:"디지털 통신 시스템",en:"Introduction to EECS II: Digital Communication Systems",school:"MIT",who:"MIT EECS",term:"Fall 2012",level:"학부",cats:["ee"],
+ summary:"정보와 엔트로피, 소스·채널 부호화, 물리 채널을 통한 전송, 주파수 영역 표현과 필터까지 디지털 통신의 전체 흐름을 학부 수준으로 다룹니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT OCW 6.02 (24개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP63ZWyJMdWIVtyweopUN3xt3"},
+  {k:"page",t:"OCW 자료 일괄 목록",u:"https://ocw.mit.edu/courses/6-02-introduction-to-eecs-ii-digital-communication-systems-fall-2012/download/"}],
+ weeks:[
+  ["1주","L1","개요: 정보와 엔트로피","information, entropy"],
+  ["2~3주","","소스 부호화와 압축 (허프만, LZW)","source coding, Huffman, LZW"],
+  ["4~6주","","채널 부호화: 오류 정정과 검출, 컨볼루션 부호","linear block codes, convolutional codes, Viterbi",[["prob","확률과 잡음"]]],
+  ["7~8주","L9","물리 채널을 통한 전송, 변조와 복조","transmitting on a physical channel, modulation",[["sig","변조 (6.003)"]]],
+  ["9~10주","L14","신호의 주파수 영역 표현 (스펙트럼)","spectral representation of signals, filters",[["sig","푸리에 해석"],["ft","푸리에 변환"]]]
+ ]},
+
+pwr:{code:"6.622",title:"전력전자",en:"Power Electronics",school:"MIT",who:"MIT EECS",term:"Spring 2023 (약 25강)",level:"학부 상급~대학원",cats:["ee"],
+ summary:"스위칭 변환기, 자성 소자, 제어까지 전력 변환의 설계 원리를 다루는 강의입니다. OCW에서 확인한 가장 최근의 전력 관련 영상 강의입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT OCW 6.622 (38개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP62UTc77mJoubhDELSC8lfR0"},
+  {k:"page",t:"OCW 과목 페이지 (슬라이드·문제)",u:"https://ocw.mit.edu/courses/6-622-power-electronics-spring-2023/"}],
+ weeks:[
+  ["1주","L1","서론: 전력전자의 역할과 변환기 구성","introduction, converter topologies",[["ckt","기초 회로"]]],
+  ["2~4주","","스위칭 변환기 기초: 벅·부스트, 정상상태 해석","buck, boost, volt-second balance",[["ckt","RLC와 스위치"]]],
+  ["5~8주","","스위치 소자와 손실, 파형 해석","switches, losses",[]],
+  ["9~11주","L10 부근","자성 소자 (인덕터·변압기 설계)","magnetics, inductor and transformer design",[["emf","전자기장 기초"]]],
+  ["12~14주","L24 부근","제어: 피드백 설계","control, feedback compensation",[["fb","되먹임 설계"],["sig","주파수 응답"]]]
+ ]},
+
+emf:{code:"6.013",title:"전자기학과 응용",en:"Electromagnetics and Applications",school:"MIT",who:"MIT EECS",term:"Fall 2005 (24강)",level:"학부 상급",cats:["ee"],
+ summary:"맥스웰 방정식을 바탕으로 정전기·정자기, 전자기파, 전송선로, 도파관, 안테나까지 다루는 학부 전자기학 강의입니다. 같은 주제의 옛 영상(RES.6-001)은 이 강의로 대체했습니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 6.013 (24개)",u:"https://www.youtube.com/playlist?list=PL502E7BF2CF94D753"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/6-013-electromagnetics-and-applications-fall-2005/"}],
+ weeks:[
+  ["1~6강","","정전기와 정자기, 맥스웰 방정식의 기본 형태","electrostatics, magnetostatics, Maxwell's equations",[["ckt","집중 소자와의 관계"]]],
+  ["7~12강","","준정적 해석, 전자기 유도와 에너지","quasistatics, induction, energy",[["pwr","자성 소자"]]],
+  ["13~24강","","전자기파, 전송선로, 도파관, 복사","waves, transmission lines, waveguides, radiation",[["optics","빛은 전자기파"]]]
+ ],
+ weeksNote:"과목 구성을 바탕으로 한 개요입니다. 강의별 정확한 제목은 재생목록에서 확인하세요."},
+
+pdc:{code:"6.450",title:"디지털 통신 원리 I",en:"Principles of Digital Communications I",school:"MIT",who:"Robert Gallager",term:"Fall 2006 (24강)",level:"대학원",cats:["ee"],
+ summary:"부호화, 신호 공간, 가우시안 잡음 채널의 검출 이론, 정보이론의 기초를 대학원 수준으로 다룹니다. 6.02의 심화 과목입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 6.450 (24개)",u:"https://www.youtube.com/playlist?list=PL2AD004D035C24F21"},
+  {k:"page",t:"OCW에서 과목 찾기",u:"https://ocw.mit.edu/search/?q=6.450+Principles+of+Digital+Communications"}],
+ weeks:[
+  ["1~8강","","디지털 인터페이스, 소스 부호화와 양자화","digital interface, source coding, quantization",[["comm","6.02 소스 부호화"]]],
+  ["9~16강","","신호 공간, 가우시안 잡음 확률과정과 검출","signal space, Gaussian noise, detection",[["prob","확률과정"]]],
+  ["17~24강","","대역 제한 채널, 변조와 채널 용량","bandlimited channels, capacity",[["sig","푸리에 해석"]]]
+ ],
+ weeksNote:"과목 구성을 바탕으로 한 개요입니다. 강의별 정확한 제목은 재생목록에서 확인하세요."},
+
+fb:{code:"RES.6-010",title:"전자 되먹임 시스템",en:"Electronic Feedback Systems",school:"MIT",who:"James Roberge (영상 강의)",term:"Spring 2013 게시",level:"학부 상급",cats:["ee"],
+ summary:"되먹임 증폭기의 이득, 안정성, 보상 설계를 다루는 아날로그 회로 중심의 고전 강의입니다. 연산증폭기 회로를 실전 설계로 확장할 때 참고합니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT Electronic Feedback Systems, 1985 (20개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP62in17jH_DiJMkCGNM6Xni-"}],
+ weeks:[
+  ["1~3주","","되먹임의 기본 개념과 루프 이득","feedback fundamentals, loop gain",[["ckt","연산증폭기"]]],
+  ["4~6주","","주파수 응답과 안정성 판별","frequency response, stability, Nyquist",[["sig","6.003 주파수 응답"]]],
+  ["7~9주","","보상과 실제 증폭기 설계","compensation, practical amplifier design",[["pwr","변환기 제어"]]]
+ ]},
+
+
+prob:{code:"RES.6-012",title:"확률 입문",en:"Introduction to Probability",school:"MIT",who:"John Tsitsiklis, Patrick Jaillet",term:"Spring 2018",level:"학부",cats:["ee"],
+ summary:"확률 모형과 조건부 확률, 이산·연속 확률변수, 한계 정리, 추론까지 다룹니다. 이전 판인 6.041SC(2013)를 대체하는 최신판으로 정리했습니다. 통신·신호처리·제어의 불확실성 모델링 기초입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT RES.6-012 (266개 영상)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP60hI9ATjSFgLZpbNJ7myAg6"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/"}],
+ weeks:[
+  ["1~2주","","확률 모형과 공리, 조건부 확률과 베이즈 규칙","probability axioms, conditioning, Bayes",[]],
+  ["3~5주","","이산 확률변수와 기댓값, 분산","discrete random variables, expectation",[]],
+  ["6~8주","","연속 확률변수, 결합분포","continuous random variables, joint distributions",[["sig","잡음과 신호"]]],
+  ["9~12주","","한계 정리, 베르누이·포아송 과정","limit theorems, Bernoulli and Poisson processes",[["comm","통신의 잡음 모델"]]]
+ ]},
+
+ft:{code:"EE 261",title:"푸리에 변환과 응용",en:"The Fourier Transform and Its Applications",school:"Stanford",who:"Brad Osgood",term:"Fall 2007 (30강)",level:"학부 상급~대학원",cats:["ee"],
+ summary:"푸리에 급수에서 출발해 푸리에 변환, 컨볼루션, 델타 함수(분포), 샘플링, DFT/FFT, 다차원 푸리에 변환까지 수학적으로 깊게 다룹니다.",
+ links:[
+  {k:"video",t:"유튜브 재생목록 (30강)",u:"https://www.youtube.com/playlist?list=PLB24BC7956EE040CD"},
+  {k:"page",t:"Stanford Engineering Everywhere 과목 페이지",u:"https://see.stanford.edu/course/ee261"},
+  {k:"notes",t:"강의노트 PDF (Osgood, 제3자 호스팅)",u:"https://www.karlin.mff.cuni.cz/~holub/soubory/TheFourierTransform/materials/lsoftaee261/book-fall-07.pdf"}],
+ weeks:[
+  ["1주","","푸리에 급수 도입: 주기 현상과 열방정식","periodic phenomena, heat equation",[["sig","6.003 푸리에 급수"]]],
+  ["2주","","푸리에 급수의 수렴과 성질","convergence, Gibbs phenomenon",[]],
+  ["3주","L3","푸리에 급수에서 푸리에 변환으로","derivation of FT and inverse FT",[["sig","푸리에 변환"]]],
+  ["4주","","푸리에 변환의 성질 (이동·신축·미분)","shift, stretch, derivative",[]],
+  ["5주","","컨볼루션과 필터","convolution theorem, filters",[["sig","컨볼루션"],["ckt","필터"]]],
+  ["6주","","델타 함수와 분포","delta function, distributions",[]],
+  ["7주","L7 부근","분포의 푸리에 변환, 중심극한정리","FT of distributions, CLT",[["prob","중심극한정리"]]],
+  ["8주","","샘플링과 보간","sampling theorem, bandlimited",[["dsp","샘플링과 DSP"]]],
+  ["9~10주","","이산 푸리에 변환(DFT)과 FFT, 선형시스템","DFT, FFT, LTI systems",[["dsp","DFT/FFT"],["lds","선형시스템"]]],
+  ["11주","L21–L27","다차원 푸리에 변환과 영상","higher-dimensional FT, imaging",[["optics","푸리에 광학"]]]
+ ]},
+
+lds:{code:"EE 263",title:"선형 동적 시스템 입문",en:"Introduction to Linear Dynamical Systems",school:"Stanford",who:"Stephen Boyd",term:"Autumn 2007 (20강)",level:"학부 상급~대학원",cats:["ee","me"],
+ summary:"선형대수를 시스템·제어·신호처리에 응용하는 강의입니다. 최소제곱, SVD, 행렬지수함수, 가제어성·가관측성으로 이어집니다.",
+ links:[
+  {k:"video",t:"유튜브 재생목록 (20강)",u:"https://www.youtube.com/playlist?list=PL06960BA52D0DB32B"},
+  {k:"page",t:"Stanford Engineering Everywhere 과목 페이지",u:"https://see.stanford.edu/Course/EE263"},
+  {k:"notes",t:"강의노트 전체 PDF (Course Reader)",u:"https://web.stanford.edu/class/archive/ee/ee263/ee263.1082/notes/ee263coursereader.pdf"},
+  {k:"page",t:"EE263 아카이브 (최신 강의 자료)",u:"https://ee263.stanford.edu/archive"}],
+ weeks:[
+  ["1주","L1–L2","개요, 선형 함수와 예제","overview, linear functions, why linear systems",[["sig","시스템 관점"]]],
+  ["2주","L3","선형대수 복습","linear algebra review",[]],
+  ["3주","","직교 집합과 QR 분해, 최소제곱과 그 응용","orthonormal sets, QR, least squares",[["cvx","최소제곱 → 볼록 최적화"]]],
+  ["4주","L8","least-norm 해, Gauss-Newton 방법","least-norm, Gauss-Newton",[["cvx","비선형 최소제곱"]]],
+  ["5주","L9","자율 선형 동적 시스템, 행렬지수함수, 고유벡터와 대각화","autonomous LDS, matrix exponential, eigenvectors",[["sig","극점과 모드"],["dyn","진동 모드"]]],
+  ["6주","","Jordan 표준형, 입력·출력이 있는 선형 시스템","Jordan form, inputs and outputs",[["sig","상태공간"]]],
+  ["7주","","대칭행렬, 이차형식, 특이값 분해(SVD)","symmetric matrices, quadratic forms, SVD",[]],
+  ["8주","","SVD 응용, 가제어성과 상태 전이","SVD applications, controllability",[["ua","제어 응용"]]],
+  ["9주","L20","가관측성과 상태 추정","observability, state estimation",[]]
+ ]},
+
+cvx:{code:"EE 364A",title:"볼록 최적화 I",en:"Convex Optimization I",school:"Stanford",who:"Stephen Boyd",term:"2023 (약 18강)",level:"대학원~학부 상급",cats:["ee"],
+ summary:"볼록 집합·함수, 볼록 최적화 문제의 표준형(LP/QP/SOCP/SDP), 쌍대성, 내점법까지 다룹니다. 교재 PDF가 무료로 공개되어 있습니다.",
+ links:[
+  {k:"video",t:"유튜브 재생목록 (2023 강의)",u:"https://www.youtube.com/playlist?list=PLoCMsyE1cvdXeoqd1hGaMBsCAQQ6otUtO"},
+  {k:"page",t:"Stanford 과목 사이트",u:"https://web.stanford.edu/class/ee364a/index.html"},
+  {k:"notes",t:"교재 Convex Optimization (무료 PDF)",u:"https://web.stanford.edu/~boyd/cvxbook/"}],
+ weeks:[
+  ["1주","L1","개요: 수학적 최적화, 최소제곱, 선형계획","optimization problem, least squares, LP",[["lds","같은 교수의 EE263"]]],
+  ["2주","","볼록 집합","convex sets, cones, separating hyperplane",[]],
+  ["3주","","볼록 함수","convex functions, Jensen, operations preserving convexity",[]],
+  ["4주","","볼록 최적화 문제","convex problems, LP, QP, SOCP, SDP",[]],
+  ["5주","","쌍대성","Lagrange dual, KKT conditions",[]],
+  ["6주","","근사와 피팅, 통계적 추정","approximation, regularization, estimation",[]],
+  ["7주","","기하 문제","geometric problems, ellipsoids",[]],
+  ["8주","","무제약 최소화와 뉴턴 방법","gradient descent, Newton's method",[]],
+  ["9주","","등식 제약 문제, 내점법","equality constrained Newton, interior-point",[["ua","궤적 최적화"],["cvx2","II편으로 이어짐"]]]
+ ]},
+
+cvx2:{code:"EE 364B",title:"볼록 최적화 II",en:"Convex Optimization II",school:"Stanford",who:"Stephen Boyd",term:"Stanford 공개 영상",level:"대학원",cats:["ee"],
+ summary:"EE364A의 후속으로 부분기울기 방법, 분해 기법, 대규모 문제용 알고리즘과 응용을 다룹니다.",
+ links:[
+  {k:"video",t:"강의 영상 목록 (Stanford 과목 사이트)",u:"https://web.stanford.edu/class/ee364b/videos.html"},
+  {k:"page",t:"과목 사이트",u:"https://web.stanford.edu/class/ee364b/"}],
+ weeks:[
+  ["1~3주","","부분기울기 방법과 확률적 방법","subgradient methods, stochastic subgradient",[["cvx","I편 선수"]]],
+  ["4~6주","","분해와 쌍대 분해, 근접 방법","decomposition, proximal methods",[]],
+  ["7~9주","","대규모 문제용 알고리즘과 응용","large-scale problems, applications",[["ua","로봇 최적제어 응용"]]]
+ ]},
+
+ua:{"code": "6.8210 (구 6.832)", "title": "부족구동 로봇공학", "en": "Underactuated Robotics", "school": "MIT", "who": "Russ Tedrake", "term": "Spring 2024 (24강, 최신)", "level": "대학원", "cats": ["me", "ee"], "summary": "걷기·비행·조작 로봇처럼 모든 자유도를 직접 제어할 수 없는 시스템을 동적 계획법, 리아푸노프 해석, 궤적 최적화, 확률 제어, 모방학습까지 다룹니다. Tedrake 본인 채널의 최신(2024) 강의로 2009·2022판을 대체했습니다.", "links": [{"k": "video", "t": "재생목록: Underactuated Robotics, Spring 2024 (Tedrake 채널, 24강)", "u": "https://www.youtube.com/playlist?list=PLkx8KyIQkMfU5szP43GlE_S1QGSPQfL9s"}, {"k": "video", "t": "재생목록: Spring 2024 기말 프로젝트 영상 (23개)", "u": "https://www.youtube.com/playlist?list=PLkx8KyIQkMfVhuyUa8b8OLuYyetzWwSc6"}, {"k": "video", "t": "Tedrake 채널: 다른 학기(2015~2023) 재생목록", "u": "https://www.youtube.com/@underactuated5171/courses"}, {"k": "page", "t": "OCW 과목 페이지 (Spring 2022)", "u": "https://ocw.mit.edu/courses/6-832-underactuated-robotics-spring-2022/"}, {"k": "notes", "t": "온라인 교재 (Tedrake, 매년 갱신)", "u": "https://underactuated.csail.mit.edu/"}], "weeks": [["1강", "L1", "Robot dynamics and model-based control", "로봇 동역학과 모델 기반 제어", [["dyn", "로봇 운동방정식"]]], ["2강", "L2", "Nonlinear Dynamics", "비선형 동역학", [["dyn", "라그랑주 역학"]]], ["3~6강", "L3–L6", "Dynamic Programming I, II / Acrobots, Cart-poles, and Quadrotors I / Dynamic Programming III", "동적 계획법, 아크로봇·카트폴·쿼드로터", [["lds", "가제어성"]]], ["7~9강", "L7–L9", "Lyapunov Analysis I / Computing Lyapunov Functions I, II", "리아푸노프 해석과 계산", [["sig", "안정성"]]], ["10~12강", "L10–L12", "Trajectory Optimization I, II / Trajectory Stabilization", "궤적 최적화와 안정화", [["cvx", "최적화 도구"], ["prinrob", "쿼드로터 궤적 최적화"]]], ["13~16강", "L13–L16", "Simple Models of Walking / Hybrid Trajectory Optimization / Planning + Control Through Contact / Humanoid Robots", "보행 모델, 접촉 계획, 휴머노이드"], ["17~18강", "L17–L18", "Mixed-discrete (combinatorial) and continuous optimization / Sampling-based (kinodynamic) motion planning", "혼합 정수 최적화, 샘플링 기반 모션 계획", [["aa274", "모션 계획"]]], ["19~21강", "L19–L21", "Stochastic dynamics / Stochastic Control / Robust Control and Policy Search", "확률 동역학, 확률 제어, 정책 탐색", [["cs224r", "정책 탐색과 강화학습"]]], ["22~24강", "L22–L24", "Output feedback / Feedback motion planning / Imitation learning, Foundation models, wrap-up", "출력 피드백, 피드백 모션 계획, 모방학습", [["man", "조작 로봇"]]]], "weeksNote": "Spring 2024 재생목록의 실제 강의 제목입니다. 재생목록에 다른 학기(2020·2022) 영상이 두 개 섞여 있습니다."},
+
+man:{"code": "6.4210", "title": "로봇 조작", "en": "Robotic Manipulation", "school": "MIT", "who": "Russ Tedrake", "term": "Fall 2023 (23강, 최신)", "level": "학부 상급~대학원", "cats": ["me", "ee"], "summary": "로봇 팔의 기구학, 피킹·플레이스, 기하 인지, 혼잡한 환경에서의 잡기, 모션 계획, 힘 제어, 딥러닝 인지, 모방학습과 강화학습, 파운데이션 모델까지 코드(Drake)와 함께 다룹니다. Tedrake 채널의 최신(2023) 강의로 2022판을 대체했습니다.", "links": [{"k": "video", "t": "재생목록: Robotic Manipulation, Fall 2023 (Tedrake 채널, 23강)", "u": "https://www.youtube.com/playlist?list=PLkx8KyIQkMfWr191lqbN8WfV08j-ui8WX"}, {"k": "video", "t": "재생목록: Fall 2023 기말 프로젝트 영상 (31개)", "u": "https://www.youtube.com/playlist?list=PLkx8KyIQkMfXgWkN-4ary4u4E2-vMOIz9"}, {"k": "video", "t": "Tedrake 채널: 다른 학기(2020~2022) 재생목록", "u": "https://www.youtube.com/@underactuated5171/courses"}, {"k": "page", "t": "OCW 과목 페이지 (Fall 2022)", "u": "https://ocw.mit.edu/courses/6-4210-robotic-manipulation-fall-2022/"}, {"k": "notes", "t": "온라인 교재 (Tedrake)", "u": "https://manipulation.csail.mit.edu/"}], "weeks": [["1~2강", "L1–L2", "Intro / Let's get you a robot!", "소개, 로봇 하드웨어와 시뮬레이션", [["dyn", "강체 운동학"]]], ["3~5강", "L3–L5", "Basic Pick and Place (Pt. 1, 2, 3)", "기본 피킹·플레이스", [["lds", "미분 기구학과 선형 근사"]]], ["6~7강", "L6–L7", "Geometric Perception (Pt. 1, 2)", "기하 인지: 점군과 정합", [["vis", "기하 인지의 이론"]]], ["8~10강", "L8–L10", "Manipulation in Clutter: Contact Simulation, Grasp Selection, Programming Tasks", "혼잡한 환경에서의 조작"], ["11~12강", "L11–L12", "Motion Planning: Optimization Based / Sampling Based and Global Optimization", "모션 계획", [["ua", "궤적 최적화"], ["aa274", "모션 계획"]]], ["13~15강", "L13–L15", "Mobile Manipulation / Force Control / Manipulator Control", "모바일 조작, 힘 제어, 매니퓰레이터 제어"], ["16~18강", "L16–L18", "Deep Perception Pt. 1, 2 / Visuomotor Policies via Behavior Cloning", "딥러닝 인지, 행동 복제", [["cs231n", "딥러닝 비전"]]], ["19~20강", "L19–L20", "Reinforcement Learning Pt. 1, 2", "강화학습", [["cs224r", "심층 강화학습"]]], ["21~23강", "L21–L23", "Multibody Parameter Estimation / Foundational Models for Decision Making / Soft Manipulation and Tactile Sensing", "파라미터 추정, 파운데이션 모델, 촉각", [["cam", "GelSight 촉각 센서"]]]], "weeksNote": "Fall 2023 재생목록의 실제 강의 제목입니다."},
+
+prinrob:{code:"MAE 345 · 549",title:"로봇공학 입문 (쿼드로터 프로그래밍)",en:"Introduction to Robotics",school:"Princeton",who:"Anirudha Majumdar",term:"영상 24강 공개, Fall 2026 개설 중",level:"학부 3~4학년·대학원",cats:["me","ee"],
+ summary:"제어, 모션 계획, 상태 추정, 컴퓨터 비전을 파이썬과 주피터 노트북으로 실습하는 강의입니다. Crazyflie 쿼드로터를 직접 제어하며, 마지막에는 비전 기반 장애물 회피 프로젝트로 마무리합니다. 소프트웨어는 ROS가 아니라 파이썬 중심입니다.",
+ links:[
+  {k:"video",t:"재생목록: Princeton Intro to Robotics, Fall 2026 (최신, 11강 공개 중)",u:"https://www.youtube.com/playlist?list=PLAaexraeO3h8"},
+  {k:"video",t:"재생목록: Princeton Intro to Robotics, Fall 2022 (24강 전체)",u:"https://www.youtube.com/playlist?list=PLF8B1bJgOQK67xkgYz_Xtx0ShjcqfdXwE"},
+  {k:"video",t:"유튜브 채널: Introduction to Robotics @ Princeton",u:"https://www.youtube.com/@intro-to-robotics"},
+  {k:"page",t:"과목 웹사이트 (슬라이드·노트·과제 — 영상 설명란 링크)",u:"https://irom-lab.princeton.edu/intro-to-robotics/"},
+  {k:"notes",t:"GitHub: 프로그래밍·하드웨어 과제 (노트북)",u:"https://github.com/Princeton-Introduction-to-Robotics"},
+  {k:"page",t:"과목 소개 글 (Bitcraze: 실습 구성)",u:"https://bitcraze.io/?p=10839"}],
+ weeks:[
+  ["1강","L1","강의 소개","course introduction",[]],
+  ["2강","L2","이산 모션 계획","discrete motion planning",[["ua","모션 계획"]]],
+  ["3강","L3","RRT (Rapidly Exploring Randomized Trees)","RRT",[["man","조작 로봇의 모션 계획"]]],
+  ["4강","L4","쿼드로터 동역학","quadrotor dynamics",[["dyn","강체 동역학"]]],
+  ["5강","L5","미분 평탄성 (Differential Flatness)","differential flatness",[]],
+  ["6강","L6","궤적 최적화","trajectory optimization",[["ua","궤적 최적화"],["cvx","최적화 도구"]]],
+  ["7강","L7","안정성과 PD 제어","stability, PD control",[["sig","되먹임·안정성"]]],
+  ["8강","L8","선형 이차 조절기 (LQR)","LQR",[["lds","선형시스템 배경"],["ua","최적제어"]]],
+  ["9강","L9","옵티컬 플로우","optical flow",[]],
+  ["10강","L10","비결정적 필터","nondeterministic filter",[]],
+  ["11강","L11","베이즈 필터","Bayes filter",[["prob","확률 기초"]]],
+  ["12~24강","","상태 추정, 지도 작성, 컴퓨터 비전과 학습, 법·윤리·경제","state estimation, mapping, vision and learning, ethics",[]]
+ ],
+ weeksNote:"1~11강은 Fall 2026 재생목록의 실제 강의 제목입니다. 12강 이후는 아직 공개되지 않았거나 확인하지 못해, Fall 2022 재생목록(24강 전체)에서 제목을 확인하세요."},
+
+cogr:{code:"16.412J",title:"인지 로봇공학",en:"Cognitive Robotics",school:"MIT",who:"MIT AeroAstro·EECS",term:"Spring 2016",level:"대학원",cats:["me","ee"],
+ summary:"로봇이 스스로 계획하고 실행하고 진단하도록 하는 모델 기반 프로그래밍, 계획, 추론 기법을 다룹니다. OCW에 심화 강의 영상 모음이 있습니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 16.412J (7개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP62Bkdzwe7caTZC7soj7ZYvk"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/16-412j-cognitive-robotics-spring-2016/"}],
+ weeks:[
+  ["1~4주","","모델 기반 프로그래밍과 계획","model-based programming, planning",[["ua","동역학적 계획"]]],
+  ["5~8주","","시간·자원 제약 계획과 실행","temporal planning, execution",[]],
+  ["9~12주","","확률적 계획과 진단","probabilistic planning, diagnosis",[["prob","확률 모델"]]]
+ ]},
+
+dyn:{code:"2.003SC",title:"공업역학",en:"Engineering Dynamics",school:"MIT",who:"J. Kim Vandiver, David Gossard",term:"Fall 2011 (39개 영상)",level:"학부",cats:["me"],
+ summary:"입자·강체의 운동학과 운동방정식에서 시작해 에너지법, 라그랑주 방정식, 선형화, 1·다자유도 진동과 모드 해석까지 이어지는 기계공학 핵심 과목입니다. 이전 판인 2.003J(2007)는 이 최신판으로 대체했습니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 2.003SC (39개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP62esZEwffjMAsEMW_YArxYC"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/2-003sc-engineering-dynamics-fall-2011/"},
+  {k:"notes",t:"Resource Index (강의·리서테이션 영상과 노트 전체)",u:"https://ocw.mit.edu/courses/2-003sc-engineering-dynamics-fall-2011/pages/resource-index/"},
+  {k:"page",t:"Syllabus",u:"https://ocw.mit.edu/courses/2-003sc-engineering-dynamics-fall-2011/pages/syllabus/"}],
+ weeks:[
+  ["1주","L1–L2","동역학의 역사, 이동 좌표계에서의 운동, 뉴턴 법칙과 입자 운동학","reference frames, Newton's laws, kinematics",[]],
+  ["2주","L3","질량중심의 운동, 회전 좌표계의 가속도","center of mass, rotating frames",[]],
+  ["3주","","입자계와 강체의 힘–운동량 방법, 평면 강체 운동","force-momentum, planar rigid body",[]],
+  ["4주","","일–에너지 개념, 가상변위와 가상일","work-energy, virtual work",[]],
+  ["5주","","라그랑주 방정식","Lagrange's equations, generalized coordinates",[["ua","로봇 동역학의 기반"],["man","로봇 운동학"]]],
+  ["6주","","운동방정식의 선형화","linearization, equilibrium",[["lds","선형 시스템"]]],
+  ["7주","L19","기계 진동 입문, 1자유도 자유진동과 감쇠","free vibration, damping ratio",[["ckt","RLC와 유사"]]],
+  ["8주","R10","강제진동, 정상상태 응답, 주파수 응답","forced vibration, frequency response, resonance",[["sig","주파수 응답"],["ckt","임피던스"]]],
+  ["9주","L23–L24","다자유도 진동, 모드 중첩, 직교성과 질량·강성·감쇠 행렬","modal analysis, orthogonality, mode superposition",[["lds","대각화"],["fea","유한요소 진동 해석"]]],
+  ["10주","R11","풀이 영상: 이중진자 시스템","double pendulum",[["ua","이중진자 제어"]]]
+ ]},
+
+
+thermo:{code:"2.43",title:"고급 열역학",en:"Advanced Thermodynamics",school:"MIT",who:"MIT Mechanical Engineering",term:"Spring 2024 (약 25강)",level:"학부 상급~대학원",cats:["me"],
+ summary:"에너지, 엔트로피, 평형, 열·확산 상호작용을 정의에서부터 쌓아 올리는 열역학 강의입니다. 확인된 OCW 열역학 영상 중 가장 최신판입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 2.43 (25개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP6309d0oJDiVo1CvxUQXJ2il"},
+  {k:"notes",t:"강의 슬라이드",u:"https://ocw.mit.edu/courses/2-43-advanced-thermodynamics-spring-2024/lists/lecture-notes/"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/2-43-advanced-thermodynamics-spring-2024/"}],
+ weeks:[
+  ["1~5주","","시스템·상태·에너지 개념, 열역학 제1법칙의 정식화","systems, states, energy, first law",[]],
+  ["6~10주","","엔트로피와 제2법칙, 안정 평형","entropy, second law, stable equilibrium",[]],
+  ["11~18주","","가용 일과 상호작용 이론","available work, interactions",[]],
+  ["19~25주","L22 부근","열·확산 상호작용의 정의, 확산·대류 플럭스","heat and diffusion interactions, fluxes",[["nano","수송 현상으로 확장"]]]
+ ]},
+
+nano:{code:"2.57",title:"나노에서 거시까지의 수송 과정",en:"Nano-to-Macro Transport Processes",school:"MIT",who:"MIT Mechanical Engineering",term:"Spring 2012",level:"대학원",cats:["me"],
+ summary:"열과 전하 수송을 미시 입자(포논·전자·광자) 관점에서 유도해, 거시적 열전도와 복사까지 연결합니다. 열전달과 반도체·소자 열관리의 이론 기반입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 2.57 (25개)",u:"https://www.youtube.com/playlist?list=PLUl4u3cNGP63jpW5Wg3MpmJIei_PCS_03"},
+  {k:"page",t:"OCW 자료 일괄 목록",u:"https://ocw.mit.edu/courses/2-57-nano-to-macro-transport-processes-spring-2012/download/"}],
+ weeks:[
+  ["1~4주","","수송 현상의 시간·길이 척도, 통계 역학 기초","scales, statistical mechanics",[["thermo","열역학 기초"]]],
+  ["5~8주","L9–L10","비열, 플랑크 법칙, 통계 열역학의 기본 개념","specific heat, Planck's law, statistical thermodynamics",[["emf","빛과 전자기파"]]],
+  ["9~12주","","볼츠만 수송 방정식, 포논과 전자 수송","Boltzmann transport, phonons, electrons",[]]
+ ]},
+
+
+optics:{code:"2.71",title:"광학",en:"Optics",school:"MIT",who:"George Barbastathis",term:"Spring 2009 영상 (Spring 2014판 노트 별도)",level:"학부",cats:["me","ee"],
+ summary:"기하광학에서 해밀턴 형식, 파동광학, 회절과 결상까지 다루는 광학 강의입니다. 영상은 2009판에 있고, 2014판은 강의노트가 공개되어 있습니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 2.71 (29개, Spring 2009)",u:"https://www.youtube.com/playlist?list=PLEA084AC2DD3CEC09"},
+  {k:"page",t:"OCW 과목 페이지 (Spring 2014, 최신 노트)",u:"https://ocw.mit.edu/courses/2-71-optics-spring-2014/"}],
+ weeks:[
+  ["1~3주","L1","과목 소개와 기하광학","introduction to optics, geometric optics",[]],
+  ["4~6주","","결상과 광학계","imaging, optical systems",[]],
+  ["7~9주","L11","해밀턴 형식과 파동 입문","Hamiltonian formulation, introduction to waves",[["dyn","해밀턴 역학"],["emf","전자기파"]]],
+  ["10~13주","","회절과 푸리에 광학","diffraction, Fourier optics",[["ft","푸리에 변환"]]]
+ ]},
+
+meddev:{code:"2.782J",title:"의료기기와 임플란트 설계",en:"Design of Medical Devices and Implants",school:"MIT",who:"MIT Mechanical Engineering·HST",term:"Spring 2025",level:"학부 상급~대학원",cats:["me"],
+ summary:"의료기기·임플란트 설계의 재료, 규제, 사례를 다루는 설계 과목입니다. 확인된 OCW 기계공학 영상 강의 중 가장 최근 학기 중 하나입니다.",
+ links:[
+  {k:"page",t:"OCW 강의 영상 페이지 (Spring 2025)",u:"https://ocw.mit.edu/courses/2-782j-design-of-medical-devices-and-implants-spring-2025/pages/lecture-videos/"},
+  {k:"page",t:"OCW 과목 페이지",u:"https://ocw.mit.edu/courses/2-782j-design-of-medical-devices-and-implants-spring-2025/"}],
+ weeks:[
+  ["1~4주","","의료기기 설계 개요와 요구사항","design process, requirements",[]],
+  ["5~9주","","재료·생체적합성과 임플란트 설계","materials, biocompatibility, implants",[["fea","구조 해석"]]],
+  ["10~13주","","규제와 사례 연구","regulation, case studies",[]]
+ ]},
+
+mfg:{code:"2.830J",title:"제조 공정 제어",en:"Control of Manufacturing Processes",school:"MIT",who:"MIT Mechanical Engineering",term:"Spring 2008",level:"학부 상급~대학원",cats:["me"],
+ summary:"통계적 공정관리, 실험계획, 회귀, 공정 최적화와 run-by-run 제어를 통해 제조 공정의 변동을 다룹니다. 확률과 제어의 접점입니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: MIT 2.830J (22개)",u:"https://www.youtube.com/playlist?list=PL7CF97E01FDE7C51A"},
+  {k:"page",t:"OCW 영상 자료",u:"https://ocw.mit.edu/courses/2-830j-control-of-manufacturing-processes-sma-6303-spring-2008/resources/lecture-videos/"}],
+ weeks:[
+  ["1~4주","","공정 변동과 통계적 공정 관리(SPC)","process variation, SPC",[["prob","확률 기초"]]],
+  ["5~8주","","실험계획법과 회귀 분석","design of experiments, regression",[]],
+  ["9~12주","","공정 최적화와 run-by-run 제어","optimization, run-by-run control",[["fb","되먹임 제어"]]]
+ ]},
+
+fea:{code:"RES.2-002",title:"고체·구조물의 유한요소 절차 (선형·비선형)",en:"Finite Element Procedures for Solids and Structures",school:"MIT",who:"Klaus-Jürgen Bathe",term:"Spring 2010 게시 (선형 12강 + 비선형 22강)",level:"대학원",cats:["me"],
+ summary:"유한요소법의 정식화, 구조 요소, 정적·동적 해석(선형 12강)과 라그랑주 정식화, 비선형 정적·동적 해석, 탄소성·크리프(비선형 22강)를 강의 영상으로 다룹니다.",
+ links:[
+  {k:"video",t:"공식 재생목록: Linear Finite Element Analysis (12강)",u:"https://www.youtube.com/playlist?list=PLD4017FC423EC3EB5"},
+  {k:"video",t:"공식 재생목록: Nonlinear Finite Element Analysis (22강)",u:"https://www.youtube.com/playlist?list=PL75C727EA9F6A0E8B"},
+  {k:"page",t:"OCW 선형 해석 영상 목록",u:"https://ocw.mit.edu/courses/res-2-002-finite-element-procedures-for-solids-and-structures-spring-2010/video_galleries/linear/"},
+  {k:"page",t:"OCW 비선형 해석 영상 목록",u:"https://ocw.mit.edu/courses/res-2-002-finite-element-procedures-for-solids-and-structures-spring-2010/video_galleries/nonlinear/"}],
+ weeks:[
+  ["선형 1","L1","공학 해석의 기본 개념","basic concepts of engineering analysis",[]],
+  ["선형 2","L2","연속계의 해석","analysis of continuous systems",[]],
+  ["선형 3","L3–L4","변위 기반 유한요소법, 일반화 좌표 유한요소 모델","displacement-based FEM, generalized coordinate models",[]],
+  ["선형 4","L5–L6","프로그램 구현, 등매개 모델의 정식화와 계산","implementation, isoparametric models",[]],
+  ["선형 5","L7–L8","구조 요소의 정식화, 수치 적분과 모델링 고려사항","structural elements, numerical integration",[]],
+  ["선형 6","L9–L10","정적 해석과 동적 해석에서의 평형 방정식 풀이","static and dynamic solution of equilibrium equations",[["dyn","운동방정식"]]],
+  ["선형 7","L11–L12","모드 중첩 해석, 고유진동수와 모드 형상 풀이","mode superposition, frequencies and mode shapes",[["dyn","다자유도 진동·모드"]]],
+  ["비선형 1","L1–L5","비선형 해석 입문, 라그랑주 변수, Total/Updated Lagrangian","nonlinear analysis, Lagrangian formulations",[]],
+  ["비선형 2","L6–L9","유한요소 행렬의 정식화, 2D·3D 요소, 트러스 요소","FE matrices, 2D/3D solid, truss element",[]],
+  ["비선형 3","L10–L14","비선형 정적 방정식 풀이, 비선형 동적 응답","nonlinear static solutions, dynamic response",[]],
+  ["비선형 4","L15–L18","탄성 구성 관계, 탄소성과 크리프 모델링","constitutive relations, elasto-plastic, creep",[]],
+  ["비선형 5","L19–L22","보·판·쉘 요소, ADINA 시연 (선형·비선형)","beam, plate, shell elements, ADINA demonstrations",[]]
+ ],
+ weeksNote:"OCW 강의 영상 목록의 실제 강의 제목을 묶은 개요입니다."}
+};
+const C2={"mic": {"code": "6.774", "title": "반도체 공정 물리 (전공정)", "en": "Physics of Microfabrication: Front End Processing", "school": "MIT", "who": "MIT EECS", "term": "Fall 2004 (21강)", "level": "대학원", "cats": ["ee"], "summary": "웨이퍼 제조부터 산화, 확산, 이온주입, 박막 증착, 식각까지 반도체 소자 공정의 물리와 시뮬레이션을 다룹니다. 회로 과목에서 쓰는 MOSFET이 어떻게 만들어지는지 알려 줍니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.774 (21개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61IMhYaHL_x-RzNUIDJD9XK"}], "weeks": [["1~3강", "", "Crystal Growth, Wafer Fabrication / Wafer Cleaning and Gettering", "결정 성장, 웨이퍼 제조와 세정", [["ckt", "MOSFET의 제작"]]], ["4~6강", "", "Oxidation and the Si/SiO2 Interface / Dopant Diffusion", "산화막과 도펀트 확산", []], ["7~9강", "", "Dopant Diffusion: Numerical Techniques, Fermi Level Effects", "확산의 수치 해석, 페르미 준위 효과", []], ["10~12강", "", "Ion Implantation and Annealing / Transient Enhanced Diffusion", "이온주입, 어닐링, 과도 증속 확산", []], ["13~15강", "", "SUPREM IV Process Simulator / Thin Film Deposition and Epitaxy", "공정 시뮬레이터, 박막 증착과 에피택시", []], ["16~18강", "", "CVD, Modeling Topography / Etching", "화학기상증착, 식각", []], ["19~21강", "", "Poly Gate Etching / Silicides, Device Contacts / Strained Si/SiGe", "게이트 식각, 실리사이드, 변형 실리콘", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "cs4": {"code": "6.004", "title": "컴퓨터 구조 (Computation Structures)", "en": "Computation Structures", "school": "MIT", "who": "MIT EECS (Chris Terman 외)", "term": "Spring 2017 (영상 100개 이상)", "level": "학부", "cats": ["ee", "sw"], "summary": "정보와 부호화에서 출발해 CMOS 논리, 순차 회로, 유한상태기계, 파이프라이닝, 명령어 집합과 어셈블리, 컴파일러, 운영체제까지 쌓아 올리는 컴퓨터 구조 강의입니다. 회로와 소프트웨어의 다리 역할을 합니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.004 (영상 다수)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP62WVs95MNq3dQBqY2vGOtQ2"}, {"k": "page", "t": "OCW 과목 페이지", "u": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/"}], "weeks": [["1부", "", "What is Information? / Entropy / Huffman Code / Error Correction", "정보량, 엔트로피, 부호화, 오류 정정", [["comm", "6.02와 같은 주제"]]], ["2부", "", "Analog Signaling / Voltage Transfer Characteristic / MOSFET / CMOS Recipe", "디지털 전압 추상화, MOSFET, CMOS", [["ckt", "MOSFET 회로"]]], ["3부", "", "Sum of Products / Karnaugh Maps / Multiplexers / ROM", "조합 논리 설계", []], ["4부", "", "D Latch / D Register / Timing / Finite State Machines", "순차 회로와 유한상태기계", []], ["5부", "", "Latency and Throughput / Pipelining / Adders / Multipliers", "파이프라이닝, 산술 회로", []], ["6부", "", "von Neumann Model / ALU Instructions / Branches / Jumps", "프로그래머블 구조(Beta)", []], ["7부", "", "Assembly Language / Models of Computation / Uncomputable Functions", "어셈블리, 계산 모델", []], ["8부", "", "Interpretation and Compilation / Procedures / Activation Records and Stacks", "컴파일러, 스택", []]], "weeksNote": "재생목록 앞 100개 영상 기준의 개요입니다. 영상이 더 있으며 뒷부분(운영체제, 가상 메모리 등)은 재생목록에서 확인하세요."}, "vis": {"code": "6.801", "title": "기계 시각 (Machine Vision)", "en": "Machine Vision", "school": "MIT", "who": "Berthold Horn", "term": "Fall 2020 (23강)", "level": "대학원", "cats": ["sw", "ee"], "summary": "영상 형성과 광학 흐름, 음영에서 형상 복원, 에지 검출, 자세 추정, 스테레오와 회전 표현까지 고전적(비딥러닝) 컴퓨터 비전의 수학을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.801 (23개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63pfpS1gV5P9tDxxL_e4W8O"}, {"k": "page", "t": "OCW 과목 페이지", "u": "https://ocw.mit.edu/courses/6-801-machine-vision-fall-2020/"}], "weeks": [["1~3강", "", "Introduction / Image Formation, Perspective Projection / Time to Contact, Focus of Expansion", "영상 형성, 투영, 움직임 해석", []], ["4~6강", "", "Fixed Optical Flow, Optical Mouse / Photometric Stereo", "광학 흐름, 측광 스테레오", [["prinrob", "Princeton의 옵티컬 플로우 강의"]]], ["7~9강", "", "Gradient Space, Reflectance Map / Shape from Shading", "반사 지도, 음영에서 형상 복원", []], ["10~12강", "", "Edge Detection, Subpixel Position / Blob Analysis, Binary Image Processing", "에지 검출, 이진 영상 처리", []], ["13~15강", "", "Object Detection, Recognition, Pose / Hough Transform, Homography / PatMax", "객체 인식, 정렬", []], ["16~18강", "", "Fast Convolution / Photogrammetry / Rotation, Unit Quaternions", "사진측량, 회전과 사원수", [["man", "로봇 자세 표현"]]], ["19~21강", "", "Absolute Orientation / Relative Orientation, Binocular Stereo", "절대·상대 방위, 스테레오", []], ["22~23강", "", "Exterior Orientation / Gaussian Image, Direction Histograms", "외부 방위, 가우시안 영상", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "cam": {"code": "MAS.531", "title": "컴퓨테이셔널 카메라와 사진", "en": "Computational Camera and Photography", "school": "MIT", "who": "Ramesh Raskar 외", "term": "Fall 2009 (24개)", "level": "대학원", "cats": ["sw", "ee"], "summary": "렌즈와 광선 행렬, 코딩된 촬영, 컴퓨테이셔널 조명, 라이트필드, 초분광 영상 등 카메라와 알고리즘을 함께 설계하는 방법을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT MAS.531 (24개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61pwA6paIRZ30q1sjLE8b6c"}], "weeks": [["1~3강", "", "Introduction and fast-forward preview / Modern optics and lenses; ray-matrix operations", "강의 개요, 현대 광학과 광선 행렬", [["optics", "광학 기초"]]], ["4~6강", "", "Epsilon Photography / Single-shot Multi-domain Camera", "엡실론 사진술, 단일 촬영 다중 영역", []], ["7~9강", "", "Computational Illumination: dual photography, relighting / Lightfields", "컴퓨테이셔널 조명, 라이트필드", []], ["10~12강", "", "Retrographic Sensing / Lightfields part 2", "라이트필드 2", []], ["13~15강", "", "BiDi Screen / Cameras for HCI / Project ideas", "상호작용 카메라", []], ["16~18강", "", "Wavelengths and colors / Hyperspectral Imaging / Medical and scientific imaging", "색과 초분광 영상", []], ["19~24강", "", "Cameras We Cannot Picture / Coded imaging / GelSight Videos", "코딩 영상, GelSight 촉각 센서", [["man", "촉각 센서와 조작"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "mm": {"code": "18.065", "title": "데이터 분석·신호처리·머신러닝을 위한 행렬 방법", "en": "Matrix Methods in Data Analysis, Signal Processing, and Machine Learning", "school": "MIT", "who": "Gilbert Strang", "term": "Spring 2018 (36강)", "level": "학부 상급~대학원", "cats": ["sw", "ee"], "summary": "열공간, 고유값, SVD에서 시작해 최소제곱, 확률적 경사하강법, 신경망 구조와 역전파까지 데이터·신호·ML에 쓰는 선형대수를 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 18.065 (36개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63oMNUHXqIUcrkS2PivhN3k"}, {"k": "page", "t": "OCW 과목 페이지", "u": "https://ocw.mit.edu/courses/18-065-matrix-methods-in-data-analysis-signal-processing-and-machine-learning-spring-2018/"}], "weeks": [["1~5강", "", "Column Space / Multiplying and Factoring Matrices / Orthonormal Columns", "행렬 기초", []], ["6~10강", "", "Eigenvalues and Eigenvectors / Positive Definite / SVD / Eckart-Young / Norms", "고유값, SVD, 저차원 근사", [["lds", "SVD (EE263)"]]], ["11~15강", "", "Four Ways to Solve Least Squares / Minimizing norm / Randomized Matrix Multiplication", "최소제곱과 계산법", [["cvx", "최적화로의 확장"]]], ["16~20강", "", "Low Rank Changes / Derivatives of Inverse and Singular Values / Rapidly Decreasing Singular Values", "행렬의 미분과 특이값", []], ["21~25강", "", "Saddle Points / Minimizing a Function / Gradient Descent / Momentum", "최적화와 경사하강법", []], ["26~30강", "", "Linear Programming and Games / Stochastic Gradient Descent / Neural Nets / Backpropagation", "SGD, 신경망, 역전파", [["cs229", "머신러닝"]]], ["31~36강", "", "Circulants and Fourier Matrix / CNN / Learning Function / Clusters in Graphs / Julia", "합성곱, 신경망, 그래프 군집", [["sig", "푸리에와의 연결"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "dsto": {"code": "6.262", "title": "이산 확률과정", "en": "Discrete Stochastic Processes", "school": "MIT", "who": "Robert Gallager", "term": "Spring 2011 (25강)", "level": "대학원", "cats": ["ee"], "summary": "베르누이·푸아송 과정, 마르코프 체인, 갱신 과정, 랜덤 워크, 마팅게일을 다루는 통신·정보이론의 확률론 기반 과목입니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.262 (25개)", "u": "https://www.youtube.com/playlist?list=PLEEF5322B331C1B98"}], "weeks": [["1~4강", "", "Probability Review / Bernoulli Process / Law of Large Numbers / Poisson", "확률 복습, 푸아송 과정", [["prob", "확률 기초"]]], ["5~8강", "", "Poisson Combining and Splitting / Finite-state Markov Chains / Markov Eigenvalues", "마르코프 체인", []], ["9~12강", "", "Markov Rewards and Dynamic Programming / Renewals / Wald's Inequality", "갱신 과정", []], ["13~16강", "", "Little, M/G/1 / The Last Renewal / Countable-state Markov", "대기 이론", []], ["17~20강", "", "Countable-state Markov Chains and Processes / Random Walks", "가산 상태 마르코프 과정", []], ["21~25강", "", "Hypothesis Testing / Random Walks and Thresholds / Martingales", "가설검정, 랜덤 워크, 마팅게일", [["pdc", "디지털 통신 이론"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "pdc2": {"code": "6.451", "title": "디지털 통신 원리 II", "en": "Principles of Digital Communication II", "school": "MIT", "who": "David Forney", "term": "Spring 2005 (25강)", "level": "대학원", "cats": ["ee"], "summary": "6.450의 후속으로 격자·부호 이론, 컨볼루션 부호, 터보·LDPC 부호 등 채널 부호화를 대학원 수준으로 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.451 (25개)", "u": "https://www.youtube.com/playlist?list=PLF8A9EA1E1B28B438"}], "weeks": [["1~25강", "", "Lec 1 ~ Lec 25", "제목 없이 강의 번호로만 올라와 있음", [["pdc", "I편 선수"]]]], "weeksNote": "재생목록의 영상 제목이 'Lec N' 형식이라 주제별 개요를 만들지 못했습니다. 교재와 강의 자료는 OCW 과목 페이지에서 확인하세요."}, "laser": {"code": "RES.6-006", "title": "레이저와 광학 시연 영상", "en": "Video Demonstrations in Lasers and Optics", "school": "MIT", "who": "MIT EECS", "term": "(영상 49개)", "level": "학부 상급", "cats": ["ee"], "summary": "편광, 간섭, 회절, 광섬유, 레이저 공진기와 모드, 파장 가변 레이저 등을 실제 장비로 보여 주는 시연 영상 모음입니다. 광학 이론 과목과 같이 보면 좋습니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT RES.6-006 (49개)", "u": "https://www.youtube.com/playlist?list=PL4E7FAAD67B171EBC"}], "weeks": [["1~14강", "", "Polarization / Quarter-wave plate / Reflection / Two-beam interference", "편광과 간섭", [["optics", "광학 이론"]]], ["15~28강", "", "Fringe contrast / Coherence length / Mirror cavities / Fraunhofer diffraction", "결맞음, 공진기, 회절", []], ["29~42강", "", "Fresnel diffraction / Single-mode and multi-mode fiber / Laser fundamentals I, II", "프레넬 회절, 광섬유, 레이저 기초", []], ["43~49강", "", "Laser fundamentals III: argon laser, tunable dye laser", "아르곤·색소 레이저", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "ste": {"code": "2.997", "title": "태양열·열에서 전기로의 에너지 변환", "en": "Direct Solar/Thermal to Electrical Energy Conversion Technologies", "school": "MIT", "who": "MIT Mechanical Engineering", "term": "Fall 2009 (9강)", "level": "대학원", "cats": ["me", "ee"], "summary": "열전 소자, 열이온 변환, 태양전지, 복사 열전달, 집광형 태양열까지 열을 전기로 바꾸는 기술을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 2.997 (9개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP62sv7_wYRKqvf1HsL4p54Kj"}], "weeks": [["1~2강", "", "Introduction / Thermoelectric effect and devices", "열전 효과", [["thermo", "열역학"]]], ["3~4강", "", "Energy states in matter / Kinetic formulation of thermoelectricity", "물질의 에너지 상태", []], ["5~6강", "", "Thermoelectric materials / Thermionic power conversion", "열전 재료, 열이온 변환", []], ["7~9강", "", "Photovoltaic cells / Radiative heat transfer / Solar concentration", "태양전지, 복사 열전달", [["pv", "태양전지 심화"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "pv": {"code": "2.627", "title": "태양전지 기초", "en": "Fundamentals of Photovoltaics", "school": "MIT", "who": "MIT Mechanical Engineering", "term": "Fall 2011 (26개)", "level": "학부 상급~대학원", "cats": ["me", "ee"], "summary": "태양 자원, 빛 흡수, 전하 분리(다이오드), 1차원 소자 모델, 결정질·박막 태양전지, 효율 한계, 모듈과 시장까지 태양전지를 소자에서 시스템까지 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 2.627 (26개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63zDO4gelZKdchvCO1B_Hg9"}], "weeks": [["튜토리얼", "", "Texturing / Doping / Photoconductivity / Solar Cell Operation", "실험 튜토리얼", []], ["1~4강", "", "Introduction / The Solar Resource / Light Absorption / Charge Excitation", "태양 자원과 흡수", []], ["5~8강", "", "Charge Separation: Diode and Diode Under Illumination / 1D Device Model", "다이오드, 소자 모델", [["ckt", "다이오드와 반도체 소자"]]], ["9~12강", "", "Charge Extraction / Wafer Silicon Cells / Thin Films", "실리콘·박막 태양전지", []], ["13~16강", "", "PV Efficiency Limits / Advanced Concepts / Characterization", "효율 한계, 고급 개념", []], ["17~22강", "", "Modules, Systems, Reliability / Cost, Price, Markets / R&D Investment", "시스템과 경제성", [["pwr", "인버터와 전력 변환"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "se": {"code": "16.842", "title": "시스템 공학의 기초", "en": "Fundamentals of Systems Engineering", "school": "MIT", "who": "MIT AeroAstro", "term": "Fall 2015 (21개)", "level": "대학원", "cats": ["me"], "summary": "요구사항 정의, 시스템 아키텍처, 개념 선택과 트레이드스페이스, 다분야 최적화, 통합, 검증과 확인, 수명주기 관리까지 시스템 공학 전 과정을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 16.842 (21개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP60jIMmB53zl6awCKMnABhYx"}], "weeks": [["1~6강", "", "Course Design / Teams / Concept Questions / Exams", "수업 소개와 팀 운영", []], ["7~12강", "", "Team Charters / Requirements Definition / Systems Modeling Languages", "요구사항, 모델링 언어", []], ["13~15강", "", "System Architecture and Concept Generation / Tradespace Exploration", "아키텍처, 트레이드스페이스", []], ["16~18강", "", "Design Definition and Multidisciplinary Optimization / MBSE / Interfaces", "다분야 최적화, 모델 기반 시스템 공학", [["aa222", "설계 최적화"]]], ["19~21강", "", "Verification and Validation / Commissioning / Lifecycle Management", "검증과 수명주기", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "ac": {"code": "16.885J", "title": "항공기 시스템 공학", "en": "Aircraft Systems Engineering", "school": "MIT", "who": "MIT AeroAstro", "term": "Fall 2005 (23강)", "level": "대학원", "cats": ["me"], "summary": "항공우주 시스템(우주왕복선 등)을 사례로 요구사항, 설계 검토, 안전과 운영을 시스템 공학 관점에서 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 16.885J (23개)", "u": "https://www.youtube.com/playlist?list=PL35721A60B7B57386"}], "weeks": [["1~23강", "", "Lec 1 ~ Lec 22 / Shuttle Operations Video", "강의 번호로만 올라와 있음", [["se", "시스템 공학 기초"]]]], "weeksNote": "재생목록 영상 제목이 'Lec N' 형식이라 주제별 개요를 만들지 못했습니다."}, "py": {"code": "6.100L", "title": "컴퓨터 과학과 파이썬 프로그래밍 입문", "en": "Introduction to CS and Programming using Python", "school": "MIT", "who": "MIT EECS (Ana Bell 외)", "term": "Fall 2022 (26개)", "level": "학부 1학년", "cats": ["sw"], "summary": "파이썬 문법에서 시작해 이분 탐색, 함수와 객체, 예외, 재귀, 클래스, 복잡도(Big-O)까지 다루는 프로그래밍 입문입니다. 6.0001(2016)을 대체하는 최신판입니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.100L (26개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP62A-ynp6v6-LGBCzeH3VAQB"}, {"k": "page", "t": "OCW 과목 페이지", "u": "https://ocw.mit.edu/courses/6-100l-introduction-to-cs-and-programming-using-python-fall-2022/"}], "weeks": [["1~5강", "", "Introduction / Strings, Input/Output, Branching / Iteration", "기초 문법과 반복", []], ["6~10강", "", "Bisection Search / Decomposition, Abstraction, Functions / Functions as Objects", "이분 탐색, 함수", []], ["11~15강", "", "Aliasing and Cloning / List Comprehension / Exceptions and Assertions", "리스트, 예외 처리", []], ["16~20강", "", "Recursion on Non-numerics / Python Classes / Class Methods", "재귀와 클래스", []], ["21~26강", "", "Timing Programs / Big Oh and Theta / Complexity Classes / Hashing, Simulations", "복잡도와 해시", [["algo", "알고리즘으로 이어짐"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "algo": {"code": "6.006", "title": "알고리즘 입문", "en": "Introduction to Algorithms", "school": "MIT", "who": "MIT EECS (Erik Demaine, Jason Ku, Justin Solomon)", "term": "Spring 2020 (32개)", "level": "학부", "cats": ["sw"], "summary": "자료구조, 정렬, 이진 트리, 해시, 그래프 탐색(BFS/DFS), 최단 경로(다익스트라, 존슨), 동적 계획법까지 알고리즘의 기초를 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.006 (32개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63EdVPNLG3ToM6LaEUuStEY"}, {"k": "page", "t": "OCW 과목 페이지", "u": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/"}], "weeks": [["1~6강", "", "Algorithms and Computation / Data Structures and Dynamic Arrays / Problem Sessions", "알고리즘과 계산 모델", [["py", "파이썬 기초"]]], ["7~12강", "", "Linear Sorting / Binary Trees", "정렬, 이진 트리", []], ["13~18강", "", "Breadth-First Search / Depth-First Search", "그래프 탐색", []], ["19~24강", "", "Dijkstra / APSP and Johnson", "최단 경로", []], ["25~30강", "", "Dynamic Programming Parts 3, 4", "동적 계획법", []], ["31~32강", "", "Course Review / Algorithms: Next Steps", "정리와 다음 단계", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "da": {"code": "6.046J", "title": "알고리즘의 설계와 분석", "en": "Design and Analysis of Algorithms", "school": "MIT", "who": "MIT EECS (Erik Demaine, Srini Devadas, Nancy Lynch)", "term": "Spring 2015 (34개)", "level": "학부 상급", "cats": ["sw"], "summary": "분할정복, 상각 분석, 무작위화, 동적 계획법, 네트워크 흐름, 선형계획, 근사 알고리즘, 분산 알고리즘, 암호, 캐시 비의존 알고리즘까지 알고리즘 설계 기법을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.046J (34개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP6317WaSNfmCvGym2ucw3oGp"}, {"k": "page", "t": "OCW 과목 페이지", "u": "https://ocw.mit.edu/courses/6-046j-design-and-analysis-of-algorithms-spring-2015/"}], "weeks": [["1~6강", "", "Interval Scheduling / Divide and Conquer / Master Theorem", "분할정복", []], ["7~12강", "", "Amortization / Randomization: Quicksort / Randomized Select", "상각 분석, 무작위화", []], ["13~18강", "", "Range Trees / Dynamic Programming / All-Pairs Shortest Paths", "자료구조 확장, 동적 계획법", []], ["19~24강", "", "Matching / Network Flow / Linear Programming", "매칭, 흐름, 선형계획", [["cvx", "선형계획과 볼록 최적화"]]], ["25~30강", "", "Fixed-Parameter Algorithms / Approximation / Distributed Algorithms", "복잡도, 근사, 분산", []], ["31~34강", "", "Cryptography / Cache-Oblivious Algorithms", "암호와 캐시 비의존", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "crypto": {"code": "6.5630", "title": "암호학 고급 주제", "en": "Advanced Topics in Cryptography", "school": "MIT", "who": "MIT EECS", "term": "Fall 2023 (17강)", "level": "대학원", "cats": ["sw"], "summary": "상호작용 증명, sum-check, GKR 프로토콜, PCP, Fiat-Shamir, SNARG 등 검증 가능한 계산의 암호학 이론을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.5630 (17개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61EZllk7zwgvPbI4kbnKhWz"}], "weeks": [["1~3강", "", "Interactive Proofs and the Sum-Check Protocol / Doubly Efficient Interactive Proofs", "상호작용 증명", []], ["4~6강", "", "GKR Protocol / PCP via GKR and Interactive Arguments", "GKR와 PCP", []], ["7~9강", "", "Interactive Arguments / Kilian-Micali Protocol", "상호작용 논증", []], ["10~12강", "", "Fiat-Shamir Paradigm and Zero-Knowledge", "Fiat-Shamir와 영지식", []], ["13~17강", "", "Succinct Non-Interactive Arguments (SNARGs) / BARGs", "간결한 비상호작용 논증", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "dm": {"code": "6.1200J", "title": "컴퓨터 과학을 위한 수학", "en": "Mathematics for Computer Science", "school": "MIT", "who": "MIT EECS", "term": "Spring 2024 (24강)", "level": "학부", "cats": ["sw"], "summary": "명제와 증명, 귀납법, 합과 점근 표기, 점화식, 모듈러 산술과 암호, 그래프, 계수와 확률까지 컴퓨터 과학의 이산수학을 다룹니다. 6.042J(2010·2015)를 대체하는 최신판입니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.1200J (24개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61VNvICqk2HXJTonnKgAc9d"}], "weeks": [["1~4강", "", "Predicates, Sets, Proofs / Contradiction and Induction / Strong Induction", "증명 기법", []], ["5~8강", "", "Sums / Asymptotics / Recurrences", "합, 점근, 점화식", []], ["9~12강", "", "Modular Arithmetic / Cryptography / Graphs and Coloring", "모듈러 산술, 암호, 그래프", [["crypto", "암호학으로 이어짐"]]], ["13~16강", "", "Connectivity and Trees / Digraphs and DAGs / Relations and Counting", "그래프, 관계, 계수", []], ["17~20강", "", "Counting Techniques / Probability / Conditional Probability", "확률", [["prob", "확률 입문"]]], ["21~24강", "", "Random Variables / Expectation and Variance", "확률변수", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "toc": {"code": "18.404J", "title": "계산 이론", "en": "Theory of Computation", "school": "MIT", "who": "Michael Sipser", "term": "Fall 2020 (25강)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "유한 오토마타, 정규 표현, 튜링 기계, 결정 불가능성, 시간·공간 복잡도, P와 NP, PSPACE, 확률적 계산까지 계산의 한계를 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 18.404J (25개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP60_JNv2MmK3wkOt9syvfQWY"}], "weeks": [["1~5강", "", "Finite Automata, Regular Expressions / Nondeterminism / Pumping Lemma", "오토마타와 정규 언어", []], ["6~10강", "", "TM Variants, Church-Turing Thesis / Decision Problems / Undecidability", "튜링 기계, 결정 불가능성", []], ["11~15강", "", "Recursion Theorem / Time Complexity / P and NP, SAT", "시간 복잡도, P와 NP", []], ["16~20강", "", "Space Complexity, PSPACE / PSPACE-Completeness / Games", "공간 복잡도", []], ["21~25강", "", "Provably Intractable Problems / Probabilistic Computation, BPP", "난해한 문제, 확률적 계산", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "mlh": {"code": "6.S897", "title": "의료를 위한 머신러닝", "en": "Machine Learning for Healthcare", "school": "MIT", "who": "MIT EECS (David Sontag, Peter Szolovits)", "term": "Spring 2019 (25강)", "level": "대학원", "cats": ["sw"], "summary": "임상 데이터, 생리 시계열, 자연어 처리, 병리·유방촬영 영상 ML, 강화학습, 질병 진행 모델링, 규제와 공정성까지 의료 AI를 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.S897 (25개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP60B0PQXVQyGNdCyCTDU1Q5j"}], "weeks": [["1~5강", "", "What Makes Healthcare Unique? / Clinical Care / Clinical Data", "의료 데이터의 특성", []], ["6~10강", "", "Physiological Time-Series / Natural Language Processing", "시계열과 NLP", [["sig", "생체 신호 처리"]]], ["11~15강", "", "Differential Diagnosis / ML for Pathology / ML for Mammography", "진단과 영상 ML", [["cs231n", "컴퓨터 비전"]]], ["16~20강", "", "Reinforcement Learning / Disease Progression Modeling", "강화학습, 질병 진행", []], ["21~25강", "", "Automating Clinical Workflows / Regulation / Fairness", "규제와 공정성", [["fair", "공정성"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "fair": {"code": "RES.EC-001", "title": "머신러닝의 공정성", "en": "Exploring Fairness in Machine Learning", "school": "MIT", "who": "MIT OCW", "term": "Spring 2020 (9개)", "level": "학부", "cats": ["sw"], "summary": "머신러닝 윤리, 공정성 기준, 보호 속성, 사례 연구(성별 편향 완화, 폐 건강)를 통해 편향을 점검하고 완화하는 방법을 소개합니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT RES.EC-001 (9개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63IFQn8FklBOUhYVcmaxpOX"}], "weeks": [["1~3강", "", "Introduction to Ethics in ML / USAID Appropriate Use Framework", "ML 윤리와 사용 기준", []], ["4~6강", "", "Solar Lighting Example / Fairness Criteria / Protected Attributes", "공정성 기준", []], ["7~9강", "", "Case Studies: Mitigating Gender Bias, Pulmonary Health / Identifying and Mitigating Bias", "사례 연구", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "bigml": {"code": "RES.LL-005", "title": "빅데이터와 머신러닝의 수학", "en": "Mathematics of Big Data and Machine Learning", "school": "MIT", "who": "MIT Lincoln Laboratory (Jeremy Kepner)", "term": "IAP 2020 (20개)", "level": "학부 상급", "cats": ["sw", "ee"], "summary": "연관 배열, 구조화·비구조화 데이터 분석, 거듭제곱 법칙 그래프, 크로네커 그래프 등 대규모 데이터와 ML을 다루는 수학적 틀을 소개합니다. 같은 저자의 D4M(2012)을 대체하는 최신판입니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT RES.LL-005 (20개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP62uI_DWNdWoIMsgPcLGOx-V"}], "weeks": [["1~4강", "", "AI and Machine Learning / Cyber Network Data Processing / Mathematics of Big Data", "빅데이터와 ML 개요", []], ["5~12강", "", "Associative Arrays / Entity Analysis in Unstructured Data / Structured Data", "연관 배열과 데이터 분석", []], ["13~20강", "", "Power Law Graphs / Bio Sequence Cross Correlation / Kronecker Graphs", "그래프 생성과 성능", [["mm", "행렬 방법"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "perf": {"code": "6.172", "title": "소프트웨어 시스템의 성능 공학", "en": "Performance Engineering of Software Systems", "school": "MIT", "who": "Charles Leiserson 외", "term": "Fall 2018 (23강)", "level": "학부 상급", "cats": ["sw"], "summary": "행렬 곱셈 최적화에서 시작해 비트 해킹, C에서 어셈블리, 멀티코어와 경쟁 상태, 컴파일러, 캐시 효율, 락 없는 동기화까지 빠른 소프트웨어를 만드는 기법을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.172 (23개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63VIBQVWguXxZZi0566y7Wf"}], "weeks": [["1~4강", "", "Matrix Multiplication / Bentley Rules / Bit Hacks", "최적화 기초", []], ["5~8강", "", "C to Assembly / Multicore Programming / Races and Parallelism", "멀티코어와 병렬성", [["cs4", "컴퓨터 구조"]]], ["9~12강", "", "What Compilers Can and Cannot Do / Measurement / Storage Allocation", "컴파일러, 측정, 메모리 할당", []], ["13~16강", "", "Cilk Runtime / Caching / Cache-Oblivious Algorithms", "캐시 효율", []], ["17~20강", "", "Synchronization Without Locks / DSLs and Autotuning", "락 없는 동기화, 자동 튜닝", []], ["21~23강", "", "Tuning a TSP Algorithm / Graph Optimization / Dynamic Languages", "튜닝 사례", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "sicp": {"code": "6.001", "title": "컴퓨터 프로그램의 구조와 해석 (SICP)", "en": "Structure and Interpretation of Computer Programs", "school": "MIT", "who": "Harold Abelson, Gerald Sussman", "term": "1986 (40개)", "level": "학부", "cats": ["sw"], "summary": "고차 함수, 일반화 연산자, 상태와 부수 효과, 논리 프로그래밍, 레지스터 기계까지 프로그래밍을 사고 틀로 가르치는 고전 강의입니다. 지금 보기엔 오래됐지만 유일한 SICP 원본 영상입니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.001 (40개)", "u": "https://www.youtube.com/playlist?list=PLE18841CABEA24090"}], "weeks": [["1~7강", "", "Overview / Procedures and Processes / Higher-order Procedures", "절차와 고차 함수", [["py", "현대 파이썬 입문"]]], ["8~14강", "", "Generic Operators / Assignment, State, Side-effects / Computational Objects", "상태와 객체", []], ["15~21강", "", "Logic Programming Parts 1, 2 / Register Machines", "논리 프로그래밍, 레지스터 기계", [["cs4", "레지스터 기계는 컴퓨터 구조로"]]], ["22~40강", "", "Lecture 1B ~ 9B (두 번째 판)", "같은 내용의 두 번째 녹화", []]], "weeksNote": "재생목록에 같은 내용의 영상이 두 세트(앞 21개, 뒤 19개) 올라와 있습니다."}, "ds": {"code": "6.0002", "title": "컴퓨팅 사고와 데이터 과학 입문", "en": "Introduction to Computational Thinking and Data Science", "school": "MIT", "who": "MIT EECS (John Guttag, Eric Grimson)", "term": "Fall 2016 (15개)", "level": "학부", "cats": ["sw"], "summary": "최적화 문제, 그래프 모델, 확률적 사고, 몬테카를로 시뮬레이션, 신뢰구간, 실험 데이터 해석, 머신러닝 입문(군집화·분류)을 파이썬으로 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.0002 (15개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP619EG1wp0kT-7rDE_Az5TNd"}], "weeks": [["1~3강", "", "Introduction, Optimization Problems / Graph-theoretic Models", "최적화와 그래프 모델", [["py", "파이썬 기초"]]], ["4~6강", "", "Stochastic Thinking / Random Walks / Monte Carlo Simulation", "확률적 사고와 시뮬레이션", [["prob", "확률"]]], ["7~9강", "", "Confidence Intervals / Sampling and Standard Error / Experimental Data", "통계적 해석", []], ["10~12강", "", "Introduction to Machine Learning / Clustering", "머신러닝 입문", [["cs229", "본격적인 ML"]]], ["13~15강", "", "Classification / Statistical Sins", "분류와 통계적 오류", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "sec": {"code": "6.858", "title": "컴퓨터 시스템 보안", "en": "Computer Systems Security", "school": "MIT", "who": "Nickolai Zeldovich 외", "term": "Fall 2014 (22강)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "위협 모델, 제어 흐름 탈취와 버퍼 오버플로, 샌드박싱, 웹 보안, 기호 실행, SSL/HTTPS, 부채널, 익명 통신, 모바일 보안을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.858 (22개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP62K2DjQLRxDNRi0z2IRWnNh"}], "weeks": [["1~4강", "", "Threat Models / Control Hijacking / Buffer Overflow Exploits and Defenses", "위협 모델과 공격", []], ["5~8강", "", "Capabilities / Sandboxing Native Code / Web Security Model", "격리와 웹 보안", []], ["9~12강", "", "Symbolic Execution / Ur/Web / Network Security", "프로그램 분석, 네트워크 보안", []], ["13~16강", "", "SSL and HTTPS / Medical Software / Side-Channel Attacks", "암호 프로토콜, 부채널", [["crypto", "암호학"]]], ["17~22강", "", "Private Browsing / Anonymous Communication / Mobile Phone Security", "프라이버시, 모바일 보안", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "lb": {"code": "6.890", "title": "알고리즘 하한", "en": "Algorithmic Lower Bounds", "school": "MIT", "who": "Erik Demaine", "term": "Fall 2014 (23강)", "level": "대학원", "cats": ["sw"], "summary": "3-Partition, SAT 환원, 근사 불가능성, W 계층, ETH, 제약 논리, 게임 복잡도, PPAD까지 문제의 어려움을 증명하는 기법을 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.890 (23개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63d33STUUBfZUpzFCVR5-PV"}], "weeks": [["1~8강", "", "3-Partition / SAT Reductions / Circuit SAT / Planar SAT", "NP-난해성 환원", []], ["9~16강", "", "Graph Problems / Inapproximability / W Hierarchy / ETH / #P", "근사 불가능성, 매개변수 복잡도", []], ["17~23강", "", "Nondeterministic Constraint Logic / Games / 3SUM and APSP Hardness / PPAD", "게임과 세밀한 복잡도", [["toc", "계산 이론"], ["da", "알고리즘 설계"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "ads": {"code": "6.851", "title": "고급 자료구조", "en": "Advanced Data Structures", "school": "MIT", "who": "Erik Demaine", "term": "Spring 2012 (22강)", "level": "대학원", "cats": ["sw"], "summary": "영속·소급 자료구조, 기하 구조, 동적 최적성, 캐시 비의존 구조, 정수 모델, 간결한 자료구조, 동적 그래프를 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.851 (22개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61hsJNdULdudlRL493b-XZf"}], "weeks": [["1~4강", "", "Persistent Data Structures / Retroactive / Geometric Structures", "영속·소급 자료구조", [["algo", "알고리즘 기초"]]], ["5~8강", "", "Dynamic Optimality / Memory Hierarchy Models", "동적 최적성, 메모리 계층", []], ["9~12강", "", "Cache-Oblivious Structures / Dictionaries / Integer Models", "캐시 비의존, 사전", []], ["13~16강", "", "Integer Lower Bounds / Sorting in Linear Time / Static Trees", "정수 모델과 하한", []], ["17~22강", "", "Succinct Structures / Dynamic Graphs / Memory Models", "간결 구조, 동적 그래프", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "som": {"code": "6.868J", "title": "마음의 사회 (Society of Mind)", "en": "The Society of Mind", "school": "MIT", "who": "Marvin Minsky", "term": "Fall 2011 (13개)", "level": "대학원", "cats": ["sw"], "summary": "인지 구조, 계층적 지식 표현, 상식, 감정과 마음의 층위를 다루는 Minsky의 인공지능·인지과학 강의입니다. 오늘날의 딥러닝과는 다른 기호주의 AI의 시각입니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 6.868J (13개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61E-vNcDV0w5xpsIBYNJDkU"}], "weeks": [["1~3강", "", "Introduction / Falling in Love / Cognitive Architectures", "마음의 구조", []], ["4~6강", "", "Q&A / From Panic to Suffering / Layers of Mental Activities", "정신 활동의 층위", []], ["7~9강", "", "Layered Knowledge Representations / Common Sense", "지식 표현과 상식", [["cs221", "현대 AI의 원리"]]], ["10~13강", "", "Mind vs Brain / Closing Thoughts", "마음과 뇌", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "bmm": {"code": "RES.9-003", "title": "뇌, 마음, 기계 여름 과정", "en": "Brains, Minds and Machines Summer Course", "school": "MIT", "who": "Tomaso Poggio 외 (MIT·CBMM)", "term": "Summer 2015 (60개)", "level": "대학원", "cats": ["sw"], "summary": "신경과학, 인지과학, 컴퓨터 비전, 로봇공학, 기계학습 연구자들의 강연과 튜토리얼을 모은 과정입니다. 인간 지능과 인공지능을 함께 보는 시각을 줍니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT RES.9-003 (60개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61RTZrT3MIAikp2G5EEvTjf"}], "weeks": [["1~10강", "", "Poggio: Introduction to Brains, Minds and Machines / Kanwisher / Kreiman", "강연: 뇌와 기계 개요", []], ["11~20강", "", "Tenenbaum: Computational Cognitive Science / Spelke: Cognition in Infancy", "계산 인지과학", []], ["21~30강", "", "Ullman: Atoms of Recognition / Oliva: Visual Memory / Simoncelli", "시각 인식", []], ["31~40강", "", "Saxe: MVPA, fMRI / McDermott: Auditory", "사회 인지, 청각", []], ["41~50강", "", "Prescott: Control Architecture / Tellex: Human-Robot Collaboration / Metta: iCub", "로봇 인지", [["prinrob", "로봇 응용"]]], ["51~60강", "", "Tutorials: Rosasco: Machine Learning / Meyers: Understanding Neural Data", "튜토리얼: 기계학습", [["cs229", "머신러닝"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "nc": {"code": "9.40", "title": "신경 계산 입문", "en": "Introduction to Neural Computation", "school": "MIT", "who": "Michale Fee 외", "term": "Spring 2018 (20개)", "level": "학부", "cats": ["sw", "ee"], "summary": "이온 전류와 RC 회로 뉴런 모델에서 시작해 Hodgkin-Huxley, 수상돌기, 시냅스, 수용장, 시계열·스펙트럼 분석, 퍼셉트론, PCA, 재귀 신경망까지 다룹니다. 회로와 신호처리가 신경과학에 쓰이는 모습을 보여 줍니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 9.40 (20개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61I4aI5T6OaFfRK2gihjiMm"}], "weeks": [["1~4강", "", "Ionic Currents / Resistor Capacitor Circuit and Nernst Potential / RC Neuron Model", "RC 회로 뉴런 모델", [["ckt", "RC 회로"]]], ["5~8강", "", "Hodgkin-Huxley Model / Dendrites / Synapses", "Hodgkin-Huxley 모델", []], ["9~12강", "", "Receptive Fields / Time Series / Spectral Analysis", "시계열과 스펙트럼 분석", [["sig", "푸리에 해석"]]], ["13~16강", "", "Spectral Analysis Part 3 / Rate Models and Perceptrons / Matrix Operations", "퍼셉트론과 행렬", []], ["17~20강", "", "PCA / Recurrent Networks / Neural Integrators", "PCA, 재귀 신경망", [["mm", "SVD와 PCA"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "btc": {"code": "MAS.S62", "title": "암호화폐 공학과 설계", "en": "Cryptocurrency Engineering and Design", "school": "MIT", "who": "Neha Narula, Tadge Dryja 외", "term": "Spring 2018 (20개)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "서명과 해시, 작업증명, 지갑, 라이트닝 네트워크, Taproot, 기밀 거래, 대체 합의 메커니즘 등 비트코인 시스템의 설계를 코드 수준에서 다룹니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT MAS.S62 (20개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP61KHzhg3JIJdK08JLSlcLId"}], "weeks": [["1~4강", "", "Signatures, Hashing / Proof of Work and Mining", "서명, 해시, 작업증명", [["crypto", "암호학"]]], ["5~8강", "", "Synchronization and Pruning / Wallets and SPV", "동기화, 지갑", []], ["9~12강", "", "Other Fork Types / Fees / Transaction Malleability, Segregated Witness", "포크, 수수료, 세그윗", []], ["13~16강", "", "Lightning Network / Discreet Log Contracts / MAST, Taproot", "라이트닝, Taproot", []], ["17~20강", "", "Confidential Transactions / Alternative Consensus / New Directions", "기밀 거래, 합의", []]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "mat": {"code": "18.S997", "title": "MATLAB 프로그래밍 입문", "en": "Introduction to MATLAB Programming", "school": "MIT", "who": "MIT OCW", "term": "Fall 2011 (6개)", "level": "학부 1학년", "cats": ["sw", "ee"], "summary": "MATLAB 시작, 명령 프롬프트, 파일, 플로팅, 스크립트 함수, 디버깅까지 짧은 입문 영상입니다. 신호, 회로, 제어 과제의 계산 도구로 씁니다.", "links": [{"k": "video", "t": "공식 재생목록: MIT 18.S997 (6개)", "u": "https://www.youtube.com/playlist?list=PLUl4u3cNGP62bMZx9A3DR7V5myByt48CC"}], "weeks": [["1~3강", "", "Using MATLAB for the First Time / The Command Prompt / Using Files", "기본 사용법", [["sig", "신호 계산"]]], ["4~6강", "", "Plotting / Scripted Functions / Debugging", "플로팅, 함수, 디버깅", [["lds", "선형시스템 계산"]]]], "weeksNote": "재생목록의 실제 강의 제목을 묶은 개요입니다. 제목은 영어 원문이며 오른쪽 열에 우리말 풀이를 달았습니다."}, "aa274": {"code": "AA274A", "title": "로봇 자율주행의 원리", "en": "Principles of Robotic Autonomy", "school": "Stanford", "who": "Stanford Online", "term": "Autumn 2019 (17강)", "level": "학부 상급~대학원", "cats": ["me", "ee", "sw"], "summary": "이동 로봇 기구학, ROS, 궤적 최적화와 추종, 모션 계획, 카메라와 스테레오, 위치 추정과 EKF SLAM, 센서 융합까지 자율 로봇의 전체 파이프라인을 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLR9iNyexfIkk"}], "weeks": [["1~3강", "", "Overview, Mobile Robot Kinematics / ROS / Trajectory Optimization", "로봇 기구학, ROS, 궤적 최적화", [["dyn", "운동학"], ["prinrob", "같은 주제의 입문"]]], ["4~7강", "", "Trajectory Tracking / Advanced Trajectory Optimization / Motion Planning: Graph Search, Sampling-Based", "궤적 추종, 모션 계획", [["ua", "궤적 최적화"]]], ["8~12강", "", "Sensors & Intro to CV / Camera Models & Calibration / Stereo Vision / Image Processing / Classic Visual Recognition", "센서와 컴퓨터 비전", [["vis", "기계 시각"]]], ["13~17강", "", "Localization & Filters / Parametric Filtering / EKF Localization / EKF SLAM / Multi-Sensor Fusion", "필터링, SLAM, 센서 융합", [["lds", "상태 추정"]]]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "aa203": {"code": "AA203", "title": "최적 제어와 학습 기반 제어", "en": "Optimal and Learning-Based Control", "school": "Stanford", "who": "Stanford Online", "term": "Spring 2026 (19강)", "level": "대학원", "cats": ["me", "ee"], "summary": "최적화 이론, 변분법, 직접·간접 방법, 동적 계획법, LQR, 도달 가능성 해석, MPC에서 모방학습과 강화학습까지 제어를 최적화와 학습으로 확장합니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLa9dmHsLK9dg"}], "weeks": [["1~5강", "", "Course Overview / Optimization Theory / Calculus of Variations / Indirect Methods / Computational Methods", "최적화와 변분법", [["cvx", "볼록 최적화"]]], ["6~9강", "", "Direct Methods / Dynamic Programming / LQR-Style Algorithms / Stochastic DP", "직접법, 동적 계획법, LQR", [["lds", "선형시스템"], ["ua", "최적제어"]]], ["10~12강", "", "Reachability Analysis / Introduction to MPC / Feasibility of MPC", "도달 가능성과 MPC", []], ["13~16강", "", "Intro to Learning / Intro to IL and RL / Imitation Learning / Fundamentals of RL", "모방학습과 강화학습", []], ["17~19강", "", "RL Value-Based Methods / Policy Optimization / Model-Based RL", "강화학습 알고리즘", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs229": {"code": "CS229", "title": "머신러닝", "en": "Machine Learning", "school": "Stanford", "who": "Stanford Online", "term": "Spring 2026 (17강)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "지도학습, 가중 최소제곱, 지수족과 GLM, 가우시안 판별 분석, 신경망과 역전파, K-평균과 GMM, PCA, 확산 모델, 표현 학습, LLM, 강화학습 기초를 다룹니다. 2018년 Andrew Ng판을 대체하는 최신판입니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLaqpC4kq8Gpw"}], "weeks": [["1~3강", "", "Introduction / Supervised Learning Setup / Weighted Least Squares", "지도학습 기초", [["lds", "최소제곱"], ["mm", "행렬 방법"]]], ["4~6강", "", "Exponential Family, GLMs / Gaussian Discriminant Analysis / Dataset Split, ML Advice", "GLM과 판별 분석", []], ["7~8강", "", "Neural Networks 1 (Architecture), 2 (Backprop)", "신경망과 역전파", []], ["9~10강", "", "K-Means and GMM / GMM (EM), PCA", "비지도 학습", []], ["11~14강", "", "Diffusion Models / Representation Learning / LLMs / Transformers, In-Context Learning", "생성 모델과 LLM", []], ["15~17강", "", "Basic Concepts in RL, Policy Gradient", "강화학습 입문", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs336": {"code": "CS336", "title": "처음부터 만드는 언어 모델", "en": "Language Modeling from Scratch", "school": "Stanford", "who": "Stanford Online", "term": "Spring 2026 (18강)", "level": "대학원", "cats": ["sw"], "summary": "토크나이저와 PyTorch에서 시작해 트랜스포머 구조, GPU·TPU와 Triton 커널, 병렬화, 스케일링 법칙, 추론, 데이터, 사후 학습, 정렬까지 LLM을 처음부터 만드는 전 과정을 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rMqXOcazWaTUHhq-yembLCV"}], "weeks": [["1~4강", "", "Overview, Tokenization / PyTorch (einops) / Architectures / Attention Alternatives", "LLM 구조와 PyTorch", []], ["5~8강", "", "GPUs, TPUs / Kernels, Triton, XLA / Parallelism", "하드웨어와 병렬화", [["cs4", "컴퓨터 구조"], ["perf", "성능 공학"]]], ["9~12강", "", "Scaling Laws / Inference / Evaluation", "스케일링 법칙과 추론", []], ["13~18강", "", "Data / Mid- and Post-Training / RLVR / Alignment, Multimodality / Guest Lecture", "데이터, 사후 학습, 정렬", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cme295": {"code": "CME295", "title": "트랜스포머와 대규모 언어 모델", "en": "Transformers and Large Language Models", "school": "Stanford", "who": "Stanford Online", "term": "Autumn 2026 (4강, 진행 중)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "트랜스포머, LLM, LLM 학습, LLM과 강화학습을 다룹니다. 지금 공개된 것은 앞 4강이며 계속 올라오는 중입니다. 2025년판은 이 최신판으로 대체했습니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLakGfbKCei80"}], "weeks": [["1강", "", "Transformers", "트랜스포머", []], ["2강", "", "Large Language Models", "대규모 언어 모델", []], ["3강", "", "LLM training", "LLM 학습", []], ["4강", "", "Reinforcement Learning with LLMs", "LLM 강화학습", []]], "weeksNote": "현재 4강까지 공개되어 있습니다."}, "cs231n": {"code": "CS231N", "title": "컴퓨터 비전을 위한 딥러닝", "en": "Deep Learning for Computer Vision", "school": "Stanford", "who": "Stanford Online", "term": "2025 (18강)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "선형 분류기, 정규화와 최적화, 신경망과 역전파, CNN과 구조, RNN, 어텐션과 트랜스포머, 객체 검출·분할, 비디오, 분산 학습, 자기지도 학습, 생성 모델, 3D 비전, 비전-언어, 로봇 학습까지 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rOmsNzYBMe0gJY2XS8AQg16"}], "weeks": [["1~4강", "", "Introduction / Image Classification with Linear Classifiers / Regularization and Optimization / Neural Networks and Backpropagation", "분류기와 신경망", [["mm", "역전파"]]], ["5~8강", "", "CNNs / CNN Architectures / RNNs / Attention and Transformers", "CNN과 어텐션", []], ["9~12강", "", "Object Detection, Segmentation / Video Understanding / Distributed Training / Self-Supervised Learning", "검출·분할, 비디오, 자기지도", [["vis", "고전 비전"]]], ["13~18강", "", "Generative Models 1, 2 / 3D Vision / Vision and Language / Robot Learning / Human-Centered AI", "생성 모델, 3D, 로봇 학습", [["man", "로봇 조작"]]]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs230": {"code": "CS230", "title": "딥러닝", "en": "Deep Learning", "school": "Stanford", "who": "Stanford Online", "term": "Autumn 2025 (9강)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "딥러닝 입문, 지도·자기지도 학습, 딥러닝 프로젝트 전 과정, 적대적 견고성과 생성 모델, 심층 강화학습, AI 프로젝트 전략, 에이전트·프롬프트·RAG를 실용 중심으로 다룹니다. MIT의 딥러닝 강의(6.7960, 15.773)는 이 최신판으로 대체했습니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rNRRGdS0rBbXOUGA0wjdh1X"}], "weeks": [["1~2강", "", "Introduction to Deep Learning / Supervised, Self-Supervised, Weakly Supervised", "딥러닝 입문과 학습 유형", [["cs229", "머신러닝 기초"]]], ["3~4강", "", "Full Cycle of a DL Project / Adversarial Robustness and Generative Models", "프로젝트 전 과정, 견고성", []], ["5~6강", "", "Deep Reinforcement Learning / AI Project Strategy", "심층 강화학습, 프로젝트 전략", []], ["7~9강", "", "Agents, Prompts, and RAG / Career Advice / What Is Going On Inside My Model?", "에이전트와 RAG, 해석 가능성", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs221": {"code": "CS221", "title": "인공지능: 원리와 기법", "en": "Artificial Intelligence: Principles and Techniques", "school": "Stanford", "who": "Stanford Online", "term": "Autumn 2025 (20강)", "level": "학부", "cats": ["sw"], "summary": "학습, 탐색, 마르코프 결정 과정, 강화학습, 게임, 베이지안 네트워크, 논리, 언어 모델과 AI와 사회까지 AI의 기본 원리를 다룹니다. MIT 6.034(2010)를 대체하는 최신판입니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rMeDqwS1yFl3j3sR_-MQNEN"}], "weeks": [["1~4강", "", "Course Overview and AI Foundations / Learning I, II, III", "AI 기초와 학습", []], ["5~8강", "", "Search I, II / Markov Decision Processes / Reinforcement Learning", "탐색, MDP, 강화학습", [["ua", "강화학습과 제어"]]], ["9~11강", "", "Policy Gradient / Games I, II", "정책 경사, 게임", []], ["12~14강", "", "Bayesian Networks I, II / Gibbs Sampling and Learning", "베이지안 네트워크", [["prob", "확률"]]], ["15~20강", "", "Logic I, II / Language Models / AI and Society / AI Supply Chains", "논리, 언어 모델, 사회", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs224r": {"code": "CS224R", "title": "심층 강화학습", "en": "Deep Reinforcement Learning", "school": "Stanford", "who": "Stanford Online", "term": "(19강)", "level": "대학원", "cats": ["sw"], "summary": "모방학습, 정책 경사, 액터-크리틱, Q-러닝, 오프라인 RL, 보상 학습, LLM을 위한 RL, 모델 기반 RL, 메타·계층 RL, 로봇을 위한 RL까지 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rPwxE0ONYRa_itZFdaKCylL"}], "weeks": [["1~5강", "", "Class Intro / Imitation Learning / Policy Gradients / Actor-Critic / Off-Policy Actor-Critic", "모방학습과 정책 기반 RL", []], ["6~9강", "", "Q-Learning / Offline RL / Reward Learning / RL for LLMs", "가치 기반, 오프라인, LLM RL", []], ["10~14강", "", "RL for LLM Reasoning / Model-Based RL / Multi-Task RL / Meta RL / Exploration", "모델 기반, 메타, 탐색", [["ua", "궤적·정책 탐색"]]], ["15~19강", "", "Hierarchical RL / RL for Robots / Advancing Robot Intelligence / Frontiers", "로봇을 위한 RL", [["man", "로봇 조작"]]]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cme296": {"code": "CME296", "title": "확산 모델과 대규모 비전 모델", "en": "Diffusion and Large Vision Models", "school": "Stanford", "who": "Stanford Online", "term": "(8강)", "level": "학부 상급~대학원", "cats": ["sw"], "summary": "확산, 스코어 매칭, 플로 매칭, 잠재 공간과 가이던스, 아키텍처, 학습, 평가, 최신 주제를 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rNdy8rt2rZ4T2xM0OjADnfu"}], "weeks": [["1~3강", "", "Diffusion / Score Matching / Flow Matching", "확산과 플로 매칭", []], ["4~6강", "", "Latent Space and Guidance / Architectures / Model Training", "잠재 공간, 아키텍처, 학습", []], ["7~8강", "", "Evaluation / Trending Topics", "평가와 최신 주제", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs193p": {"code": "CS193p", "title": "iOS 앱 개발 (SwiftUI)", "en": "iOS Development with SwiftUI", "school": "Stanford", "who": "Stanford Online", "term": "(16강)", "level": "학부", "cats": ["sw"], "summary": "Xcode와 SwiftUI, 모델과 UI, 레이아웃과 데이터 흐름, 애니메이션, 프로토콜, 복잡한 UI, iPad·Mac, SwiftData, 멀티스레딩, 제스처까지 앱 개발을 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rPHblRXKsJCQs8TLGpiCTrG"}], "weeks": [["1~4강", "", "Intro to Xcode and SwiftUI / Code Breaker App / Model and UI / Swift Type System", "SwiftUI 기초", []], ["5~8강", "", "Layout and Data Flow / Animation", "레이아웃과 애니메이션", []], ["9~12강", "", "Protocols / Building Complex UIs / iPad and Mac", "프로토콜, 복잡한 UI", []], ["13~16강", "", "SwiftData / Multithreading / Shapes, Gestures, Persistence", "데이터 저장, 멀티스레딩", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "cs329h": {"code": "CS329H", "title": "인간 선호로부터의 머신러닝", "en": "Machine Learning from Human Preferences", "school": "Stanford", "who": "Stanford Online", "term": "Autumn 2024 (8강)", "level": "대학원", "cats": ["sw"], "summary": "선호 모델, 모델 기반 선호 최적화, 메커니즘 디자인, 인간 중심 설계, 윤리, 투표 이론까지 RLHF의 이론적 토대를 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rNm525zyAObP4al43WAifZz"}], "weeks": [["1~3강", "", "Introduction / Preference Models / Model-based Preference Optimization", "선호 모델과 최적화", [["cs224r", "RLHF의 강화학습 배경"]]], ["4~6강", "", "Mechanism Design / Human-centered Design / Ethics", "메커니즘 디자인과 윤리", []], ["7~8강", "", "Voting / Course Wrap-up", "투표 이론", []]], "weeksNote": "재생목록의 실제 강의 제목입니다(영어 원문)."}, "aa222": {"code": "AA222", "title": "공학 설계 최적화", "en": "Engineering Design Optimization", "school": "Stanford", "who": "Stanford Online", "term": "(4강 공개)", "level": "대학원", "cats": ["me", "sw"], "summary": "다목적 최적화, 규율 볼록 프로그래밍 등 공학 설계에 쓰는 최적화 기법을 다룹니다. 현재 4강만 공개되어 있습니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rO6UYVy7NKVMVL3izjvOqcs"}], "weeks": [["1~2강", "", "Multiobjective Optimization / Disciplined Convex Programming", "다목적 최적화, 볼록 프로그래밍", [["cvx", "볼록 최적화"]]], ["3~4강", "", "Engineering Design Optimization (AA222 / CS361)", "설계 최적화", []]], "weeksNote": "현재 4강만 공개되어 있습니다."}, "aa228v": {"code": "AA228V", "title": "안전 필수 시스템의 검증", "en": "Validation of Safety Critical Systems", "school": "Stanford", "who": "Stanford Online", "term": "2025 (19개)", "level": "대학원", "cats": ["sw", "me"], "summary": "자율 시스템의 안전성을 시뮬레이션, 확률적 방법, 형식 검증으로 검증하는 방법을 다룹니다.", "links": [{"k": "video", "t": "재생목록: Stanford Online 공식 채널", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rOq1LMLI8U7djzDb8--xpaC"}], "weeks": [["1~19강", "", "Validation of Safety Critical Systems 1 ~ 17 / Mechanistic Interpretability / Course Overview", "제목에 주제가 드러나지 않음", [["aa203", "최적 제어"]]]], "weeksNote": "재생목록 제목이 강의명 반복이라 주제별 개요를 만들지 못했습니다."}};
+Object.assign(C,{"aa289": {"code": "AA289 · ENGR319", "title": "로봇공학·자율 시스템 세미나", "en": "Robotics and Autonomous Systems Seminar", "school": "Stanford", "who": "Stanford Online (초청 연사 세미나)", "term": "2025~2026 + 이전 시즌 (영상 약 100개)", "level": "대학원 (세미나)", "cats": ["me", "sw"], "summary": "로봇 학습과 파운데이션 모델, 능숙한 조작과 촉각, 안전한 자율성, 우주·극한 환경 로봇, 비행·소프트 로봇 설계까지 연구자들이 한 편씩 발표하는 세미나 시리즈입니다. 정식 강의가 아니라 최신 연구 흐름을 훑는 용도입니다.", "links": [{"k": "video", "t": "재생목록: Robotics and Autonomous Systems Seminar (Stanford Online)", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rMeercb-kvGLUrOq4HR6BZD"}], "weeks": [["2026 봄·겨울", "", "Robot Learning from Human Experience / Mechanical Intelligence in Locomotion / Gen Control, Action Chunking, Moravec's Paradox / Ψ0: An Open Foundation Model / Bringing AI Up To Speed / Autonomous Navigation and Safe Humanoids / Resilient Autonomy / Robot Motion Learning w/ Physics-Based PDE Priors", "인간 경험으로부터의 학습, 보행의 기계적 지능, 행동 청킹, 개방형 파운데이션 모델, 안전한 휴머노이드", [["cs224r", "로봇 학습의 바탕인 강화학습"]]], ["2025 가을", "", "The Dynamics of Fluid Physical Interaction / Next Generation Dexterous Manipulation / The Graph Physical AI Approach / Embodied Foundation Models / General Compliant Robot Interaction / Adaptive Robots / Manipulation Data Pyramid / Make Every Step an Experiment", "유체 상호작용, 능숙한 조작, 체화 파운데이션 모델, 순응 제어, 조작 데이터 피라미드", [["man", "조작 로봇의 기본 개념"]]], ["이전 시즌: 학습·파운데이션 모델", "", "Robot Learning Without Action Chunking / Generalization through Task Representations with Foundation Models / Evaluating and Improving Steerability of Generalist Robot Policies / Robot Learning in the Era of Large Pretrained Models / Connecting Robotics and Foundation Models (Brian Ichter) / Democratizing Robot Learning / Interactive Imitation Learning", "범용 로봇 정책과 파운데이션 모델, 모방학습", [["aa203", "학습 기반 제어"]]], ["이전 시즌: 조작·촉각", "", "The Trouble with Contact / Improving Robotic Dexterity with Optical Tactile Sensor DenseTact / Active Compliance for Robust Manipulation / Adaptable Robotic Manipulation Using Tactile Sensors / Perceiving, Understanding, and Interacting through Touch / Stowing and Picking Items in E-Commerce (Amazon Robotics) / Designing Robotic Grippers for Interaction with Real-World Environments", "접촉, 촉각 센서, 순응 조작, 물류 로봇", [["man", "피킹·플레이스와 촉각 센싱"]]], ["이전 시즌: 안전·자율성", "", "Towards Open World Robot Safety / Continual Safety Assurances for Learning-Enabled Robotic Systems / Towards Trustworthy Autonomy / Blending Data-Driven CBF Approximations with HJ Reachability / From open-source to safety-certified robotic software / Architecting Next-Generation AV Autonomy Stacks / Foundations of Spatial Perception for Robotics", "로봇 안전 보증, 신뢰할 수 있는 자율성, 자율주행 스택", [["aa228v", "안전 필수 시스템의 검증"], ["aa274", "자율주행의 원리"]]], ["이전 시즌: 우주·극한 환경·비행", "", "Space Autonomy Through the Lens of Foundation Models / Autonomous NASA robots breaking records on Mars / Improving Computational Efficiency for Powered Descent Guidance / Embodied Intelligence for Extreme Environments / ReachBot / Flying Robots: Exploring Hybrid Locomotion and Physical Interaction / Learning to control large teams of robots", "우주 자율, 착륙 유도, 비행 로봇과 다중 로봇", []], ["이전 시즌: 소프트·설계·인간-로봇", "", "Soft Material Robotics and Next-Generation Surgical Robots / Designing Origami Voxels for Robotics / Computational Design of Compliant, Dynamical Robots / Creating Life-like Robots / Considerations for Human-Robot Collaboration / Modeling Humans for Humanoid Robots / Robotics algorithms that take people into account", "소프트 로봇, 오리가미 설계, 인간-로봇 협업", []]], "weeksNote": "재생목록에 영상이 약 100개 있고 제목이 연사별 발표라, 강의 순서가 아니라 주제별로 묶은 개요입니다. 각 칸의 영어 제목은 그 묶음에 속한 대표 발표들입니다."}, "ee292r": {"code": "EE292R", "title": "과학을 위한 AI와 데이터", "en": "AI and Data for Science", "school": "Stanford", "who": "Stanford Online", "term": "Autumn 2026 (진행 중, 영상 2개)", "level": "대학원", "cats": ["sw"], "summary": "과학 연구에 AI와 데이터를 쓰는 방법을 다루는 세미나형 과목입니다. 현재 재생목록에는 망막의 계산 모델과 월드 모델 두 강연이 올라와 있습니다.", "links": [{"k": "video", "t": "재생목록: EE292R AI and Data for Science (Stanford Online)", "u": "https://www.youtube.com/playlist?list=PLYiycvG2rxJ0"}], "weeks": [["1회", "", "Models of Computation in the Retina", "망막이 하는 계산의 모델", []], ["2회", "", "From World Models to World Agents", "월드 모델에서 월드 에이전트로", [["cs224r", "에이전트와 강화학습"]]]], "weeksNote": "진행 중인 과목이라 영상이 두 개뿐이며 이후 강의가 올라오면 늘어납니다."}, "mse435": {"code": "MS&E435", "title": "AI 슈퍼사이클의 경제학", "en": "Economics of the AI Supercycle", "school": "Stanford", "who": "Stanford Online", "term": "Spring 2026 (영상 9개)", "level": "대학원", "cats": ["sw"], "summary": "생성형 AI의 경제학, GPU 경제, AI 팩토리 구축, 인프라와 엔터프라이즈 AI, 사내 지식, 코딩 AI와 응용 AI, 생명과학 분야 응용까지 AI 산업의 구조를 경제와 사업 관점에서 다룹니다. 모델을 만드는 과목이 아니라 산업을 이해하는 과목입니다.", "links": [{"k": "video", "t": "재생목록: MS&E435 Economics of the AI Supercycle (Stanford Online)", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rOAe_DtQYOCKy6_x3irEYV1"}], "weeks": [["1~2회", "", "Economics of Generative AI / The GPU Economy", "생성형 AI와 GPU의 경제학", [["cs336", "언어 모델이 요구하는 연산량"]]], ["3~5회", "", "Building AI Factories / Infrastructure, Enterprise AI, SaaS / Infrastructure, Capstone Case", "AI 팩토리와 인프라, 엔터프라이즈 AI", []], ["6~9회", "", "Enterprise Internal Knowledge / Applications, Coding AI / Applications, Applied AI / Applications, AI in Life Sciences", "사내 지식, 코딩 AI, 응용 AI, 생명과학", [["cme295", "LLM의 응용"]]]], "weeksNote": "영상 제목에 회차 번호가 없어 제목 흐름으로 묶은 개요입니다."}, "cs183f": {"code": "CS183F", "title": "스타트업 스쿨: 첫 100일", "en": "Startup School: The First 100 Days", "school": "Stanford", "who": "Y Combinator 강연자들", "term": "Spring 2017 (18개)", "level": "교양·창업", "cats": ["sw"], "summary": "창업의 이유와 방법, 아이디어와 측정, 제품 만들기, 사용자 확보와 성장, 제품-시장 적합성, PR, 미래를 발명하는 법, 팀 구성, 자금 조달까지 스타트업 초기 100일을 Y Combinator 관계자들의 강연과 오피스 아워로 다룹니다.", "links": [{"k": "video", "t": "재생목록: Startup School CS183F (Stanford Online)", "u": "https://www.youtube.com/playlist?list=PLoROMvodv4rNpMrTeeh-627Lajh6uSUgY"}], "weeks": [["1~3회", "", "How and Why to Start A Startup / Startup Mechanics / How to Get Ideas & Measure", "창업의 이유, 법인 설립과 재무 기초, 아이디어와 측정", []], ["4~8회", "", "Live Office Hours (Altman) / How to Build a Product I–IV", "제품 만들기 네 편과 오피스 아워", [["cs193p", "앱을 실제로 만들어 보기"]]], ["9~12회", "", "How to Get Users and Grow / Live Office Hours (Cheung, Garg) / How to Find Product Market Fit / How to Think About PR", "사용자 확보, 제품-시장 적합성, PR", []], ["13~18회", "", "How to Invent the Future I–II / Diversity + Inclusion at Early Stage Startups / How to Build and Manage Teams / Live Office Hours (Hale, Caldwell) / How to Raise Money, and How to Succeed Long-Term", "미래를 발명하는 법, 팀, 자금 조달", []]], "weeksNote": "재생목록 순서를 뒤집어 정리한 것이며 실제 강의 순서와 다를 수 있습니다."}});
+Object.assign(C,C2);
+Object.keys(C).forEach(k=>C[k].id=k);
+
+/* 과목 간 연결 (type: pre = a를 먼저 보면 b가 쉬움, alt = 같은 주제, app = 응용, rel = 함께 보면 좋음) */
+const E=[
+ {a:"sc01",b:"ckt",type:"pre",why:"입문 과목에서 맛본 회로를 본격적인 회로 과목에서 자세히 배웁니다."},
+ {a:"sc01",b:"sig",type:"pre",why:"6.01SC의 신호·시스템 모듈이 6.003의 예고편입니다."},
+ {a:"ckt",b:"sig",type:"pre",why:"RC·RLC 1·2차 회로와 임피던스를 극점과 주파수 응답으로 일반화합니다."},
+ {a:"ckt",b:"pwr",type:"pre",why:"스위치·인덕터·축전기 회로가 전력 변환기의 기본 단위입니다."},
+ {a:"ckt",b:"fb",type:"pre",why:"연산증폭기 회로를 되먹임 이론과 안정성 설계로 확장합니다."},
+ {a:"ckt",b:"dyn",type:"app",why:"RLC 회로와 질량-스프링-댐퍼는 같은 2차 미분방정식입니다(전기-기계 유추)."},
+ {a:"sig",b:"dsp",type:"pre",why:"이산시간 시스템과 Z 변환을 디지털 필터 설계로 이어갑니다."},
+ {a:"sig",b:"comm",type:"pre",why:"주파수 영역 표현과 변조가 디지털 통신의 기본 도구입니다."},
+ {a:"sig",b:"ft",type:"pre",why:"6.003에서 푸리에 변환을 익힌 뒤 Osgood 강의로 수학적 깊이를 더합니다."},
+ {a:"sig",b:"lds",type:"pre",why:"전달함수 표현을 상태공간 표현으로 확장합니다."},
+ {a:"sig",b:"fb",type:"pre",why:"되먹임과 주파수 응답이 되먹임 증폭기 설계의 토대입니다."},
+ {a:"sig",b:"dyn",type:"app",why:"주파수 응답·공진·전달함수를 기계 진동에 그대로 적용합니다."},
+ {a:"prob",b:"comm",type:"pre",why:"잡음 채널 모델과 오류 확률을 다루려면 확률이 필요합니다."},
+ {a:"ft",b:"dsp",type:"rel",why:"푸리에 변환의 이산 버전(DFT/FFT)을 서로 보강해 줍니다."},
+ {a:"ft",b:"optics",type:"app",why:"회절과 결상은 푸리에 변환으로 설명됩니다(푸리에 광학)."},
+ {a:"emf",b:"pwr",type:"pre",why:"자성 소자와 변압기 설계는 전자기 유도 법칙 위에 있습니다."},
+ {a:"emf",b:"optics",type:"rel",why:"빛은 전자기파이며, 파동광학은 맥스웰 방정식의 해석입니다."},
+ {a:"pwr",b:"fb",type:"rel",why:"변환기의 피드백 제어는 되먹임 시스템 이론을 그대로 씁니다."},
+ {a:"lds",b:"cvx",type:"pre",why:"같은 Boyd 교수의 강의로, 최소제곱에서 볼록 최적화로 확장됩니다."},
+ {a:"cvx",b:"cvx2",type:"pre",why:"EE364A의 후속편입니다."},
+ {a:"lds",b:"ua",type:"pre",why:"선형 제어(LQR)와 가제어성이 부족구동 로봇 제어의 출발점입니다."},
+ {a:"lds",b:"prinrob",type:"pre",why:"Princeton 강의의 LQR 호버링 실습이 선형시스템 이론 위에 놓입니다."},
+ {a:"dyn",b:"ua",type:"pre",why:"라그랑주 역학으로 얻은 운동방정식이 로봇 동역학의 기반입니다."},
+ {a:"dyn",b:"prinrob",type:"pre",why:"쿼드로터 모델링에 강체 동역학이 쓰입니다."},
+ {a:"dyn",b:"fea",type:"rel",why:"모드 해석을 유한요소법으로 구조물에 확장합니다."},
+ {a:"ua",b:"man",type:"pre",why:"같은 교수의 강의로, 최적제어와 모션 계획을 조작 로봇에 적용합니다."},
+ {a:"ua",b:"prinrob",type:"rel",why:"LQR과 모션 계획을 두 강의에서 서로 다른 시각으로 다룹니다."},
+ {a:"cvx",b:"ua",type:"app",why:"궤적 최적화와 모델 예측 제어에 최적화 도구를 활용합니다."},
+ {a:"prinrob",b:"cogr",type:"rel",why:"로봇의 계획·인지를 다른 접근(AI 계획)으로 다룹니다."},
+ {a:"thermo",b:"nano",type:"pre",why:"거시 열역학을 미시 통계·수송 이론으로 확장합니다."},
+ {a:"mfg",b:"prob",type:"rel",why:"공정 변동 관리는 확률·통계 위에 서 있습니다."},
+ {a:"mfg",b:"meddev",type:"rel",why:"의료기기 제조 공정 설계에서 공정 제어가 쓰입니다."}
+];
+E.push({a:"comm",b:"pdc",type:"pre",why:"6.02의 부호화·변조를 대학원 수준의 이론(검출·용량)으로 확장합니다."},{a:"prob",b:"pdc",type:"pre",why:"가우시안 잡음과 검출 이론은 확률과정 위에 있습니다."});
+E.push({a:"mic",b:"ckt",type:"pre",why:"MOSFET 같은 소자가 실제로 어떻게 만들어지는지 공정 물리로 보여 줍니다."},{a:"mic",b:"pv",type:"rel",why:"반도체 공정(도핑·확산·박막)이 태양전지 제작에도 그대로 쓰입니다."},{a:"cs4",b:"sc01",type:"rel",why:"입문 과목의 프로그래밍·회로 흐름을 컴퓨터 구조로 이어 갑니다."},{a:"cs4",b:"ckt",type:"rel",why:"CMOS 논리와 MOSFET 스위치 모델이 두 과목에서 겹칩니다."},{a:"cs4",b:"comm",type:"rel",why:"정보량·엔트로피·허프만 부호·오류 정정이 6.02와 같은 내용입니다."},{a:"cs4",b:"py",type:"pre",why:"프로그래밍을 먼저 익히면 어셈블리와 컴파일러가 쉬워집니다."},{a:"cs4",b:"perf",type:"pre",why:"컴퓨터 구조를 알면 성능 공학이 이해됩니다."},{a:"vis",b:"prinrob",type:"rel",why:"Princeton 강의의 옵티컬 플로우를 고전 비전 이론으로 깊이 다룹니다."},{a:"vis",b:"cs231n",type:"alt",why:"같은 컴퓨터 비전을 고전 방식(기하·광학)과 딥러닝 방식으로 나눠 다룹니다."},{a:"vis",b:"cam",type:"rel",why:"영상 형성과 광학이라는 같은 기반 위에 있습니다."},{a:"vis",b:"aa274",type:"rel",why:"카메라 모델·스테레오가 로봇 자율주행의 인지 부분입니다."},{a:"cam",b:"optics",type:"pre",why:"렌즈와 광선 행렬은 광학 과목의 내용입니다."},{a:"mm",b:"lds",type:"rel",why:"SVD와 최소제곱을 EE263과 다른 시각(데이터·ML)으로 다룹니다."},{a:"mm",b:"cs229",type:"pre",why:"행렬 방법이 머신러닝 알고리즘의 수학적 기반입니다."},{a:"mm",b:"sig",type:"rel",why:"순환 행렬과 푸리에 행렬이 신호처리와 연결됩니다."},{a:"dsto",b:"prob",type:"pre",why:"확률 입문 위에 확률과정을 쌓습니다."},{a:"dsto",b:"pdc",type:"pre",why:"통신 이론의 확률과정 도구를 제공합니다."},{a:"pdc2",b:"pdc",type:"pre",why:"6.450 다음 단계로 부호화를 다룹니다."},{a:"laser",b:"optics",type:"rel",why:"광학 이론 과목의 시연 영상으로 같이 보면 좋습니다."},{a:"laser",b:"emf",type:"rel",why:"편광·회절이 전자기파의 성질입니다."},{a:"ste",b:"thermo",type:"rel",why:"열역학의 응용으로 열을 전기로 바꾸는 기술입니다."},{a:"ste",b:"pv",type:"rel",why:"태양전지 이론이 이어집니다."},{a:"pv",b:"ckt",type:"app",why:"태양전지의 핵심은 다이오드입니다."},{a:"pv",b:"pwr",type:"rel",why:"태양광 시스템에는 전력 변환기가 필수입니다."},{a:"se",b:"aa222",type:"rel",why:"설계 최적화가 시스템 공학의 다분야 최적화와 이어집니다."},{a:"se",b:"meddev",type:"rel",why:"의료기기 설계에서도 요구사항·검증 과정이 쓰입니다."},{a:"se",b:"ac",type:"pre",why:"시스템 공학을 알면 항공기 사례가 쉬워집니다."},{a:"py",b:"algo",type:"pre",why:"파이썬 기초 위에 알고리즘을 배웁니다."},{a:"py",b:"ds",type:"pre",why:"파이썬으로 데이터 과학을 시작합니다."},{a:"py",b:"cs193p",type:"rel",why:"프로그래밍 입문 뒤 앱 개발로 확장할 수 있습니다."},{a:"py",b:"sicp",type:"alt",why:"프로그래밍 입문을 현대 파이썬 방식과 고전 SICP 방식으로 나눠 다룹니다."},{a:"py",b:"mat",type:"rel",why:"수치 계산 도구로 MATLAB을 같이 배울 수 있습니다."},{a:"algo",b:"da",type:"pre",why:"기초 알고리즘 뒤에 설계 기법을 배웁니다."},{a:"algo",b:"ads",type:"pre",why:"자료구조의 기본을 알고 고급 구조를 봅니다."},{a:"algo",b:"perf",type:"pre",why:"알고리즘을 알아야 성능을 어떻게 올릴지 판단됩니다."},{a:"da",b:"lb",type:"rel",why:"알고리즘 설계와 하한(어려움 증명)이 짝을 이룹니다."},{a:"da",b:"cvx",type:"rel",why:"선형계획이 알고리즘과 최적화 양쪽에서 쓰입니다."},{a:"dm",b:"algo",type:"rel",why:"증명·점근 표기가 알고리즘의 수학 기반입니다."},{a:"dm",b:"crypto",type:"pre",why:"모듈러 산술이 암호학의 출발점입니다."},{a:"dm",b:"toc",type:"pre",why:"증명 기법이 계산 이론의 기초입니다."},{a:"dm",b:"prob",type:"rel",why:"확률 파트가 확률 입문과 겹칩니다."},{a:"toc",b:"lb",type:"pre",why:"계산 복잡도 개념 위에서 하한 증명을 봅니다."},{a:"crypto",b:"sec",type:"rel",why:"암호 프로토콜이 보안 시스템에 쓰입니다."},{a:"crypto",b:"btc",type:"rel",why:"암호화폐는 서명·해시 암호의 응용입니다."},{a:"sec",b:"cs4",type:"rel",why:"메모리와 스택 구조를 알아야 버퍼 오버플로를 이해합니다."},{a:"mlh",b:"cs229",type:"pre",why:"머신러닝 기초를 의료 응용에 적용합니다."},{a:"mlh",b:"fair",type:"rel",why:"의료 AI의 공정성 문제가 이어집니다."},{a:"fair",b:"cs329h",type:"rel",why:"공정성과 인간 선호 문제가 연결됩니다."},{a:"bigml",b:"mm",type:"rel",why:"대규모 데이터의 행렬적 관점이 겹칩니다."},{a:"bigml",b:"cs229",type:"rel",why:"ML을 데이터 시스템 관점에서 보완합니다."},{a:"ds",b:"cs229",type:"pre",why:"데이터 과학 입문을 본격적인 ML로 이어 갑니다."},{a:"ds",b:"prob",type:"rel",why:"확률·통계적 사고가 겹칩니다."},{a:"som",b:"cs221",type:"rel",why:"기호주의 AI의 관점을 현대 AI 원리와 비교해 볼 수 있습니다."},{a:"som",b:"bmm",type:"rel",why:"인지과학·AI의 큰 그림을 공유합니다."},{a:"bmm",b:"nc",type:"rel",why:"신경과학과 계산 모델을 공유합니다."},{a:"bmm",b:"cs231n",type:"rel",why:"시각 인지를 신경과학과 딥러닝에서 같이 다룹니다."},{a:"nc",b:"ckt",type:"app",why:"뉴런 모델은 RC 회로입니다."},{a:"nc",b:"sig",type:"app",why:"스펙트럼 분석과 시계열이 신호처리와 같습니다."},{a:"nc",b:"mm",type:"rel",why:"PCA와 SVD가 겹칩니다."},{a:"mat",b:"lds",type:"rel",why:"선형시스템 계산 도구로 쓰입니다."},{a:"mat",b:"sig",type:"rel",why:"신호 계산·플로팅에 쓰입니다."},{a:"aa274",b:"prinrob",type:"alt",why:"입문 로봇공학 두 강의가 모션 계획과 궤적 최적화를 다르게 다룹니다."},{a:"aa274",b:"ua",type:"rel",why:"궤적 최적화와 모션 계획이 겹칩니다."},{a:"aa274",b:"lds",type:"pre",why:"상태 추정과 필터는 선형시스템 기초 위에 있습니다."},{a:"aa203",b:"ua",type:"rel",why:"최적제어와 강화학습으로 로봇을 제어합니다."},{a:"aa203",b:"lds",type:"pre",why:"LQR의 선형시스템 배경입니다."},{a:"aa203",b:"cvx",type:"pre",why:"최적화 이론이 최적 제어의 도구입니다."},{a:"aa203",b:"cs224r",type:"rel",why:"학습 기반 제어와 심층 강화학습이 이어집니다."},{a:"cs229",b:"cs230",type:"pre",why:"머신러닝 위에 딥러닝을 배웁니다."},{a:"cs229",b:"cs221",type:"rel",why:"ML과 AI 전반을 다른 각도에서 다룹니다."},{a:"cs229",b:"prob",type:"pre",why:"확률이 ML의 언어입니다."},{a:"cs229",b:"cs224r",type:"pre",why:"강화학습 기초가 심층 강화학습으로 이어집니다."},{a:"cs230",b:"cs231n",type:"pre",why:"딥러닝 기초 위에 비전 응용을 배웁니다."},{a:"cs230",b:"cme295",type:"pre",why:"딥러닝을 알면 트랜스포머가 쉬워집니다."},{a:"cs231n",b:"cme296",type:"pre",why:"비전 모델 위에서 확산 모델을 배웁니다."},{a:"cs231n",b:"man",type:"app",why:"로봇 조작의 인지에 딥러닝 비전이 쓰입니다."},{a:"cs336",b:"cme295",type:"pre",why:"트랜스포머 이론 위에서 LLM을 처음부터 만듭니다."},{a:"cs336",b:"cs4",type:"rel",why:"GPU와 병렬화는 컴퓨터 구조와 이어집니다."},{a:"cs336",b:"perf",type:"rel",why:"성능 최적화와 병렬화가 겹칩니다."},{a:"cme295",b:"cme296",type:"rel",why:"같은 시리즈의 비전 쪽 강의입니다."},{a:"cs221",b:"prob",type:"rel",why:"베이지안 네트워크가 확률 위에 있습니다."},{a:"cs221",b:"ua",type:"rel",why:"MDP와 강화학습이 제어와 겹칩니다."},{a:"cs224r",b:"ua",type:"rel",why:"정책 탐색과 강화학습을 로봇 제어에서도 다룹니다."},{a:"cs224r",b:"man",type:"app",why:"로봇 조작에 강화학습이 쓰입니다."},{a:"cs224r",b:"cs329h",type:"rel",why:"RLHF의 강화학습 배경입니다."},{a:"cs329h",b:"cs336",type:"rel",why:"LLM 사후 학습의 인간 선호 이론입니다."},{a:"aa222",b:"cvx",type:"rel",why:"설계 최적화가 볼록 최적화와 이어집니다."},{a:"aa222",b:"aa203",type:"rel",why:"최적화 방법이 제어에서도 쓰입니다."},{a:"aa228v",b:"aa203",type:"rel",why:"안전한 제어와 검증이 이어집니다."},{a:"aa228v",b:"cs221",type:"rel",why:"확률 모델 위에서 안전성을 검증합니다."},{a:"sicp",b:"cs4",type:"rel",why:"레지스터 기계가 컴퓨터 구조로 이어집니다."},{a:"ads",b:"da",type:"rel",why:"알고리즘 설계와 자료구조가 짝을 이룹니다."},{a:"perf",b:"sicp",type:"rel",why:"고수준 추상화와 저수준 성능을 비교해 볼 수 있습니다."});
+E.push({a:"aa289",b:"man",type:"rel",why:"로봇 조작의 기초를 알면 세미나의 조작 발표가 잘 읽힙니다."});
+E.push({a:"aa289",b:"aa274",type:"rel",why:"자율주행 로봇의 원리가 세미나의 자율성 주제로 이어집니다."});
+E.push({a:"aa289",b:"aa203",type:"rel",why:"학습 기반 제어가 로봇 학습 발표의 바탕입니다."});
+E.push({a:"aa289",b:"aa228v",type:"rel",why:"세미나의 안전 보증 주제를 검증 과목에서 체계적으로 배웁니다."});
+E.push({a:"aa289",b:"cs224r",type:"rel",why:"로봇 학습 발표는 심층 강화학습과 닿아 있습니다."});
+E.push({a:"ee292r",b:"cs224r",type:"rel",why:"월드 모델과 에이전트는 강화학습의 확장입니다."});
+E.push({a:"ee292r",b:"cs229",type:"rel",why:"과학 데이터에 머신러닝을 적용하는 바탕입니다."});
+E.push({a:"mse435",b:"cs336",type:"rel",why:"AI 인프라의 경제성은 언어 모델 훈련의 연산 요구에서 출발합니다."});
+E.push({a:"mse435",b:"cme295",type:"rel",why:"LLM의 응용 사례와 산업 구조를 함께 봅니다."});
+E.push({a:"cs183f",b:"cs193p",type:"rel",why:"창업 초기 제품 만들기를 앱 개발 강의와 함께 볼 수 있습니다."});
+const HUB_MIN=6;
+
+const degree=id=>E.filter(e=>e.a===id||e.b===id).length;
+const isHub=id=>degree(id)>=HUB_MIN;
+function neighbors(id){
+  return E.filter(e=>e.a===id||e.b===id).map(e=>{
+    const other=e.a===id?e.b:e.a;
+    let tag;
+    if(e.type==="pre") tag=e.a===id?"이어서 보면 좋음":"먼저 보면 좋음";
+    else if(e.type==="alt") tag="같은 주제의 다른 강의";
+    else if(e.type==="app") tag="응용·연결";
+    else tag="함께 보면 좋음";
+    return {id:other,tag,why:e.why};
+  });
+}
+
+/* ===== 유틸 ===== */
+const NS="http://www.w3.org/2000/svg";
+const el=(tag,attrs={},parent)=>{const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n;};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const catChips=c=>c.cats.map(k=>`<span class="chip" style="color:${CATS[k].c}">${CATS[k].n}</span>`).join("");
+const nodeColor=id=>isHub(id)?"var(--purple)":"var(--black)";
+const nodeR=id=>3.5+Math.min(degree(id),10)*.65;
+const shortTitle=id=>C[id].title.length>14?C[id].title.slice(0,14)+"…":C[id].title;
+
+/* ===== 라벨 배치 유틸: 줄바꿈 + 겹침 해소 ===== */
+const FS=10.5,LH=13;
+const chW=ch=>/[ㄱ-힣]/.test(ch)?FS:FS*0.58;
+const textW=s=>{let w=0;for(const ch of s)w+=chW(ch);return w;};
+function wrapTitle(title,maxW=84){
+  const lines=[];let cur="";
+  const push=w=>{ // 한 단어가 너무 길면 글자 단위로 쪼갬
+    if(textW(w)<=maxW*1.25){return [w];}
+    const out=[];let c="";for(const ch of w){if(textW(c+ch)>maxW&&c){out.push(c);c=ch;}else c+=ch;}if(c)out.push(c);return out;
+  };
+  for(const word of title.split(" ")){
+    for(const part of push(word)){
+      const cand=cur?cur+" "+part:part;
+      if(textW(cand)<=maxW||!cur)cur=cand;else{lines.push(cur);cur=part;}
+    }
+  }
+  if(cur)lines.push(cur);
+  return lines;
+}
+function boxOf(n){ // n.r, n.lines 로 충돌 상자 계산 (상자 중심은 노드 중심보다 아래)
+  const lw=Math.max(...n.lines.map(textW));
+  n.hw=Math.max(n.r,lw/2)+5;
+  const lh=n.lines.length*LH;
+  n.hh=(2*n.r+6+lh)/2;
+  n.oy=(6+lh)/2; // 상자 중심 = y + oy
+}
+function resolveOverlaps(nodes,fixed,passes,pad=8){
+  for(let it=0;it<passes;it++){
+    let moved=false;
+    for(let a=0;a<nodes.length;a++)for(let b=a+1;b<nodes.length;b++){
+      const p=nodes[a],q=nodes[b];
+      const dx=(q.x)-(p.x),dy=(q.y+q.oy)-(p.y+p.oy);
+      const ox=p.hw+q.hw+pad-Math.abs(dx),oy=p.hh+q.hh+pad-Math.abs(dy);
+      if(ox>0&&oy>0){
+        moved=true;
+        const pf=fixed&&fixed(p),qf=fixed&&fixed(q);
+        const share=pf&&qf?0:(pf||qf?1:.5);
+        if(pf&&qf)continue;
+        if(ox<oy){const s=dx===0?(a<b?-1:1):Math.sign(dx);const m=ox;
+          if(!pf)p.x-=s*m*(qf?1:.5);if(!qf)q.x+=s*m*(pf?1:.5);
+        }else{const s=dy===0?(a<b?-1:1):Math.sign(dy);const m=oy;
+          if(!pf)p.y-=s*m*(qf?1:.5);if(!qf)q.y+=s*m*(pf?1:.5);
+        }
+      }
+    }
+    if(!moved)break;
+  }
+}
+function drawLabel(g,n,color,weight,size){
+  const t=el("text",{"text-anchor":"middle","font-size":size||FS},g);
+  n.lines.forEach((ln,i)=>{const s=el("tspan",{x:0,dy:i===0?n.r+FS+2:LH,"font-weight":weight,fill:color},t);s.textContent=ln;});
+}
+function fitBox(nodes,m=24){
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  nodes.forEach(n=>{x0=Math.min(x0,n.x-n.hw);x1=Math.max(x1,n.x+n.hw);y0=Math.min(y0,n.y-n.r-2);y1=Math.max(y1,n.y+n.oy+n.hh);});
+  return [x0-m,y0-m,x1-x0+2*m,y1-y0+2*m];
+}
+
+/* ===== 전체 그래프 (force layout + 겹침 방지) ===== */
+let mainGraph=null;
+function makeGraph(svg,ids){
+  const n0=ids.length;
+  const cw=Math.max(320,(svg.parentNode.clientWidth||1000)-2);
+  const gb=svg.parentNode.getBoundingClientRect();const ch=Math.max(620,Math.floor(window.innerHeight-(gb.top+(window.scrollY||0))-60-20));
+  let W=cw,H=ch;
+  svg.innerHTML="";
+  const idx={};
+  const nodes=ids.map((id,i)=>{idx[id]=i;const a=i/n0*2*Math.PI;
+    const n={id,x:0,y:0,vx:0,vy:0};
+    n.r=nodeR(id);n.lines=wrapTitle(C[id].title);boxOf(n);return n;});
+  const links=E.filter(e=>idx[e.a]!==undefined&&idx[e.b]!==undefined).map(e=>({s:nodes[idx[e.a]],t:nodes[idx[e.b]],e}));
+  const gl=el("g",{},svg),gn=el("g",{},svg);
+  links.forEach(l=>{l.el=el("line",{class:"gedge"},gl);});
+  nodes.forEach(n=>{
+    const g=el("g",{class:"gnode"},gn);
+    el("circle",{r:n.r,fill:isHub(n.id)?"#6C31E3":"#1E1E1E"},g);
+    drawLabel(g,n,isHub(n.id)?"#6C31E3":"#1E1E1E",isHub(n.id)?"800":"600");
+    const tt=el("title",{},g);tt.textContent=C[n.id].title;
+    n.g=g;
+  });
+  let alpha=1,drag=null,raf=null;
+  const rep=Math.max(9000,n0*260);
+  function step(a){
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const p=nodes[i],q=nodes[j];let dx=q.x-p.x,dy=q.y-p.y,d2=dx*dx+dy*dy;
+      if(d2<1){dx=(i-j)*.5;dy=.5;d2=1;}
+      const d=Math.sqrt(d2),f=rep/d2*a,fx=dx/d*f,fy=dy/d*f;
+      p.vx-=fx;p.vy-=fy;q.vx+=fx;q.vy+=fy;
+    }
+    links.forEach(l=>{
+      const dx=l.t.x-l.s.x,dy=l.t.y-l.s.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-120)*.025*a,fx=dx/d*f,fy=dy/d*f;
+      l.s.vx+=fx;l.s.vy+=fy;l.t.vx-=fx;l.t.vy-=fy;
+    });
+    nodes.forEach(n=>{
+      n.vx+=(W/2-n.x)*.002*a;n.vy+=(H/2-n.y)*.002*a;
+      if(n!==drag){n.vx*=.78;n.vy*=.78;n.x+=n.vx;n.y+=n.vy;}else{n.vx=0;n.vy=0;}
+    });
+    resolveOverlaps(nodes,q=>q===drag,3);
+    nodes.forEach(n=>{n.x=Math.max(n.hw+4,Math.min(W-n.hw-4,n.x));n.y=Math.max(n.r+6,Math.min(H-(n.oy+n.hh)-4,n.y));});
+  }
+  function draw(){
+    links.forEach(l=>{l.el.setAttribute("x1",l.s.x);l.el.setAttribute("y1",l.s.y);l.el.setAttribute("x2",l.t.x);l.el.setAttribute("y2",l.t.y);});
+    nodes.forEach(n=>n.g.setAttribute("transform",`translate(${n.x},${n.y})`));
+  }
+  function overlapCount(){let c=0;for(let a=0;a<nodes.length;a++)for(let b=a+1;b<nodes.length;b++){const p=nodes[a],q=nodes[b];if(p.hw+q.hw-Math.abs(q.x-p.x)>0&&p.hh+q.hh-Math.abs((q.y+q.oy)-(p.y+p.oy))>0)c++;}return c;}
+  function place(){
+    nodes.forEach((n,i)=>{const a=i/n0*2*Math.PI;n.x=W/2+Math.cos(a)*W*.38;n.y=H/2+Math.sin(a)*H*.38;n.vx=0;n.vy=0;});
+    for(let i=0;i<500;i++)step(Math.max(.03,1-i/380));
+    resolveOverlaps(nodes,null,400);
+  }
+  function outCount(){let c=0;nodes.forEach(n=>{if(n.x-n.hw<0||n.x+n.hw>W||n.y-n.r<0||n.y+n.oy+n.hh>H)c++;});return c;}
+  // 화면 크기에 먼저 맞춰 배치하고, 겹침이 남으면 캔버스를 조금씩 키워 한 화면에 전부 보이게 축소
+  place();let tries=0;
+  while((overlapCount()>0||outCount()>0)&&tries<60){W*=1.06;H*=1.06;tries++;place();}
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  svg.style.width="100%";svg.style.minWidth="0";svg.style.height=ch+"px";svg.style.margin="0";svg.style.maxWidth="100%";
+  draw();
+  function loop(){step(alpha);draw();alpha*=.96;if(alpha>.03||drag)raf=requestAnimationFrame(loop);else{raf=null;resolveOverlaps(nodes,null,60);nodes.forEach(n=>{n.x=Math.max(n.hw+2,Math.min(W-n.hw-2,n.x));n.y=Math.max(n.r+2,Math.min(H-(n.oy+n.hh)-2,n.y));});draw();}}
+  function kick(a){alpha=Math.max(alpha,a);if(!raf)raf=requestAnimationFrame(loop);}
+  function applyView(hover){
+    const nb=hover?new Set([hover,...neighbors(hover).map(x=>x.id)]):null;
+    nodes.forEach(n=>{n.g.style.opacity=(nb&&!nb.has(n.id))?.14:1;});
+    links.forEach(l=>{
+      const on=hover&&(l.e.a===hover||l.e.b===hover);
+      l.el.setAttribute("stroke",on?"#6C31E3":"#CBBDF5");
+      l.el.setAttribute("stroke-width",on?2.8:1.6);
+      l.el.style.opacity=(hover&&!on)?.12:1;
+    });
+  }
+  const toSvg=ev=>{const pt=svg.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;return pt.matrixTransform(svg.getScreenCTM().inverse());};
+  nodes.forEach(n=>{
+    n.g.addEventListener("mouseenter",()=>{if(!drag)applyView(n.id);});
+    n.g.addEventListener("mouseleave",()=>{if(!drag)applyView(null);});
+    n.g.addEventListener("pointerdown",ev=>{
+      ev.preventDefault();
+      drag=n;let moved=false;const start=toSvg(ev);
+      kick(.5);
+      const mv=e=>{const p=toSvg(e);if(Math.hypot(p.x-start.x,p.y-start.y)>4)moved=true;n.x=p.x;n.y=p.y;kick(.4);};
+      const up=()=>{
+        window.removeEventListener("pointermove",mv);window.removeEventListener("pointerup",up);
+        drag=null;
+        if(!moved)go("#/c/"+n.id);
+      };
+      window.addEventListener("pointermove",mv);window.addEventListener("pointerup",up);
+    });
+  });
+  applyView(null);
+  return {destroy(){if(raf)cancelAnimationFrame(raf);}};
+}
+
+/* ===== 로컬 그래프 (현재 과목을 중심에 둔 방사형, 겹침 방지) ===== */
+function localGraph(svg,id){
+  svg.innerHTML="";
+  const nb=neighbors(id);
+  const m=nb.length;
+  const cx=0,cy=0;
+  const rx=Math.max(200,m*26),ry=Math.max(150,m*19);
+  const center={id,x:cx,y:cy,r:13,lines:wrapTitle(C[id].title,130)};boxOf(center);
+  const nodes=nb.map((p,i)=>{const a=-Math.PI/2+i/m*2*Math.PI;
+    const n={id:p.id,x:cx+Math.cos(a)*rx,y:cy+Math.sin(a)*ry,r:9,lines:wrapTitle(C[p.id].title,130)};boxOf(n);return n;});
+  const all=[center,...nodes];
+  resolveOverlaps(all,q=>q===center,300,10);
+  const vb=fitBox(all,20);
+  svg.setAttribute("viewBox",vb.join(" "));
+  svg.style.width=Math.round(vb[2])+"px";svg.style.maxWidth="100%";svg.style.margin="0 auto";
+  nodes.forEach(n=>el("line",{x1:cx,y1:cy,x2:n.x,y2:n.y,stroke:"#CBBDF5","stroke-width":1.8},svg));
+  const draw=(n,color,bold)=>{
+    const g=el("g",{class:"gnode",transform:`translate(${n.x},${n.y})`},svg);
+    el("circle",{r:n.r,fill:color},g);
+    drawLabel(g,n,bold?"#6C31E3":"#1E1E1E",bold?"800":"600",12.5);
+    if(n.id!==id)g.addEventListener("click",()=>{go("#/c/"+n.id);});
+  };
+  nodes.forEach(n=>draw(n,"#1E1E1E",false));
+  draw(center,"#6C31E3",true);
+}
+
+/* ===== 사이드바 ===== */
+const filterCats=new Set();let query="";
+function matches(c){
+  if(filterCats.size&&!c.cats.some(k=>filterCats.has(k)))return false;
+  if(!query)return true;
+  const hay=[c.code,c.title,c.en,c.school,c.who,c.summary,...c.weeks.map(w=>w[2]+" "+w[3])].join(" ").toLowerCase();
+  return query.toLowerCase().split(/\s+/).every(t=>hay.includes(t));
+}
+function renderSidebar(cur){
+  const f=document.getElementById("filters");
+  f.innerHTML=`<button class="fbtn ${filterCats.size?"":"on"}" data-c="">전체</button>`+Object.keys(CATS).map(k=>`<button class="fbtn ${filterCats.has(k)?"on":""}" data-c="${k}">${CATS[k].n}</button>`).join("");
+  f.querySelectorAll("button").forEach(b=>b.onclick=()=>{const k=b.dataset.c;if(!k)filterCats.clear();else if(filterCats.has(k))filterCats.delete(k);else filterCats.add(k);renderSidebar(currentId());rebuildGraph();});
+  const list=Object.values(C).filter(matches);
+  document.getElementById("clist").innerHTML=list.map(c=>`<a href="#/c/${c.id}" class="${c.id===cur?"cur":""}"><div class="ct"><span class="${isHub(c.id)?"hubmark":"nodemark"}"></span>${esc(c.title)}</div><div class="cs">${esc(c.school)} · ${esc(c.who)}</div></a>`).join("")||`<p class="cs" style="padding:8px">검색 결과가 없습니다.</p>`;
+}
+const visibleIds=()=>Object.values(C).filter(matches).map(c=>c.id);
+let curRoute="";try{curRoute=location.hash||""}catch(e){}
+const currentId=()=>{const m=curRoute.match(/^#\/c\/(\w+)/);return m&&C[m[1]]?m[1]:null;};
+function go(r){curRoute=r;try{if(location.hash!==r)history.replaceState(null,"",r)}catch(e){}route();}
+document.addEventListener("click",ev=>{const a=ev.target.closest&&ev.target.closest("a[href^='#/']");if(a){ev.preventDefault();go(a.getAttribute("href"));}});
+document.getElementById("q").addEventListener("input",e=>{query=e.target.value.trim();renderSidebar(currentId());rebuildGraph();});
+
+/* ===== 화면 ===== */
+const view=document.getElementById("view");
+function rebuildGraph(){
+  const svg=document.getElementById("g");if(!svg)return;
+  if(mainGraph){mainGraph.destroy();mainGraph=null;}
+  const ids=visibleIds();
+  const idset=new Set(ids);
+  const ec=E.filter(e=>idset.has(e.a)&&idset.has(e.b)).length;
+  const cnt=document.getElementById("cnt");
+  if(cnt)cnt.textContent=ids.length+"개 노트가 "+ec+"개의 관계로 연결되어 있습니다.";
+  svg.innerHTML="";
+  if(!ids.length){svg.setAttribute("viewBox","0 0 1300 200");const t=el("text",{x:650,y:100,"text-anchor":"middle","font-size":"16",fill:"#3B3558"},svg);t.textContent="조건에 맞는 노트가 없습니다.";return;}
+  mainGraph=makeGraph(svg,ids);
+}
+function showHome(){
+  if(mainGraph){mainGraph.destroy();mainGraph=null;}
+  const hubs=Object.keys(C).filter(isHub).map(id=>C[id].title).join(", ");
+  view.innerHTML=`
+  <h1>OCW 전자·기계·소프트웨어 학습 그래프</h1>
+  <p class="lead"><span id="cnt"></span> 노드를 클릭하면 주차별 강의 내용과 영상·강의노트 링크가 열리고, 드래그로 위치를 옮길 수 있습니다. 노드에 마우스를 올리면 연결된 과목만 강조됩니다.</p>
+  <div class="graphbox"><svg id="g"></svg>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--purple)"></span>중심 노트 (연결 ${HUB_MIN}개 이상)</span>
+      <span><span class="dot" style="background:var(--black)"></span>기본 노트</span>
+    </div>
+  </div>
+  <h2>추천 학습 경로</h2>
+  <div class="path"><b>신호·통신</b>${pathLinks(["sc01","ckt","sig","dsp","comm","pdc"])}</div>
+  <div class="path"><b>회로·전력</b>${pathLinks(["sc01","ckt","fb","pwr"])}</div>
+  <div class="path"><b>컴퓨터 구조</b>${pathLinks(["py","cs4","perf","cs336"])}</div>
+  <div class="path"><b>알고리즘</b>${pathLinks(["py","algo","da","lb"])}</div>
+  <div class="path"><b>AI·딥러닝</b>${pathLinks(["prob","cs229","cs230","cs231n","cme295","cs336"])}</div>
+  <div class="path"><b>로봇·제어</b>${pathLinks(["dyn","sig","lds","ua","man"])}</div>
+  <div class="path"><b>Princeton 로봇</b>${pathLinks(["dyn","lds","prinrob","aa274","ua"])}</div>
+  <div class="path"><b>로봇 학습</b>${pathLinks(["lds","cvx","aa203","cs224r","man","aa289"])}</div>
+  <div class="path"><b>기계 해석</b>${pathLinks(["dyn","fea","meddev"])}</div>
+  <p class="note">화살표는 왼쪽 과목을 먼저 보면 오른쪽 과목이 쉬워진다는 뜻의 제안이며, 교과과정상의 필수 선수관계는 아닙니다.</p>
+  <footer>
+    <b>확인 범위</b>: MIT OpenCourseWare 공식 유튜브 채널의 과목 재생목록 255개 전체, 같은 채널의 기타 재생목록 104개, Stanford Online 채널의 재생목록 81개를 모두 열어 분야를 판정했습니다(이후 직접 고른 AA289·EE292R·MS&E435·CS183F 네 개를 추가했습니다). 그중 전자·기계·소프트웨어·AI 과목만 담았고, 수학·물리·화학·생물·경제·인문 과목은 제외했습니다.<br>
+    <b>중복 정리</b>: 같은 과목의 옛 판과 겹치는 내용은 최신판만 남겼습니다. 예) 6.832(Underactuated)·6.4210(조작) → Tedrake 채널의 최신판(2024·2023), 2.003J → 2.003SC, 6.041SC → RES.6-012, 6.0001·6.00SC → 6.100L, 6.042J → 6.1200J, 6.034(AI) → Stanford CS221, MIT 딥러닝 강의 → Stanford CS230, CS229(2018) → CS229(2026), CME295(2025) → CME295(2026), D4M → RES.LL-005, RES.6.007(1987) → 6.003, RES.6-001 → 6.013.<br>
+    <b>빠진 것</b>: 영상이 데모·프로젝트 소개뿐이거나 정책 중심인 재생목록(6.007 실험, 16.01, 16.810, RES.ENV-007 등), 제목이 'Lec N'뿐이라 주제를 확인할 수 없는 일부 옛 강의(6.033, 6.035, 6.189)는 뺐습니다. 2.008, 2.14, 2.007, 6.012 등은 두 채널에 재생목록이 없어 넣지 못했습니다. 2.782J는 OCW 페이지에는 강의 영상이 있으나 유튜브 재생목록 주소는 찾지 못했습니다.<br>
+    <b>한계</b>: Berkeley, CMU, Harvard 등 다른 기관의 채널은 전체 확인을 하지 않았습니다. 기존 25개 과목 중 일부(6.002, 6.003 등)의 주차표는 제가 정리한 개요이고, 이번에 추가한 과목의 주차표는 재생목록의 실제 강의 제목입니다.<br>
+    조사 기준일 2026-11-01.
+  </footer>`;
+  rebuildGraph();
+  renderSidebar(null);
+}
+function pathLinks(ids){return ids.map(id=>`<a href="#/c/${id}">${esc(C[id].title.split(" (")[0])}</a>`).join('<span class="ar">→</span>');}
+
+function showCourse(id){
+  if(mainGraph){mainGraph.destroy();mainGraph=null;}
+  const c=C[id];
+  const groups=[["video","강의 영상"],["notes","강의노트·교재"],["page","과목 페이지"]];
+  const linkHtml=groups.map(([k,label])=>{
+    const ls=c.links.filter(l=>l.k===k);
+    return ls.length?`<div class="grp">${label}</div>`+ls.map(l=>`<a class="lnk ${k}" href="${esc(l.u)}" target="_blank" rel="noopener">${esc(l.t)}${l.s?"<small>검색</small>":""}</a>`).join(""):"";
+  }).join("");
+  const nb=neighbors(id);
+  const relHtml=nb.map(n=>`<li><span class="tag">${n.tag}</span><br><a href="#/c/${n.id}"><b>${esc(C[n.id].title)}</b></a> <span class="cs">· ${esc(C[n.id].school)}</span><div class="why">${esc(n.why)}</div></li>`).join("");
+  const rows=c.weeks.map(w=>`<tr><td class="w">${esc(w[0])}</td><td class="l">${esc(w[1])}</td><td>${esc(w[2])}</td><td class="k">${esc(w[3])}</td><td>${(w[4]||[]).map(r=>`<a class="refchip" href="#/c/${r[0]}" title="${esc(C[r[0]].title)}">${esc(C[r[0]].title)} · ${esc(r[1])}</a>`).join("")}</td></tr>`).join("");
+  view.innerHTML=`
+  <a class="back" href="#/">← 그래프로 돌아가기</a>
+  <h1 style="margin-top:10px">${esc(c.title)}</h1>
+  <div class="meta">${esc(c.school)} · ${esc(c.who)} · ${esc(c.term)} · ${esc(c.level)}</div>
+  <div>${catChips(c)}${isHub(id)?'<span class="chip" style="color:var(--purple)">중심 노트</span>':""}</div>
+  <p class="lead">${esc(c.summary)}</p>
+  <h2>강의 자료</h2>
+  ${linkHtml}
+  <div class="two">
+    <div><h2>연관 과목</h2><ul class="rel">${relHtml}</ul></div>
+    <div><h2>로컬 그래프</h2><div class="graphbox"><svg id="lg"></svg></div></div>
+  </div>
+  <h2>주차별 강의 내용</h2>
+  <div class="tblwrap"><table class="weeks"><thead><tr><th>주차</th><th>강의</th><th>내용</th><th>키워드</th><th>연결되는 과목</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <p class="note">${esc(c.weeksNote||ARROW_NOTE)}</p>`;
+  localGraph(document.getElementById("lg"),id);
+  renderSidebar(id);
+}
+function route(){
+  const id=currentId();
+  if(id)showCourse(id);else showHome();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",()=>{curRoute=location.hash||"";route();});
+route();
+</script>
+</body>
+</html>
